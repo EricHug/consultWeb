@@ -1,0 +1,28 @@
+.zx_header{
+    width:686px;
+    margin:0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .zx_city{
+        width:126px;
+        text-align:center;
+        line-height: 88px;
+        font-size: 28px;
+    }
+    .zx_search{
+        width:560px;
+        border-radius: 44px;
+        overflow: hidden;
+    }
+}
+.zx_content{
+    padding:32px;
+    .zx_content_item{
+        >p{
+            color:#a3a3a3;
+            font-size: 24px;
+            padding:20px;
+        }
+    }
+}

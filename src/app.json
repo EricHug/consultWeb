@@ -1,0 +1,32 @@
+{
+  "pages": [
+    "pages/index/main",
+    "pages/center/main",
+    "pages/counter/main"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "XX咨询网",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#999",
+    "selectedColor": "#222",
+    "backgroundColor": "#f8f9fb",
+    "borderStyle": "white",
+    "list": [{
+        "pagePath": "pages/index/main",
+        "text": "首页",
+        "iconPath": "assets/images/home.png",
+        "selectedIconPath": "assets/images/home-active.png"
+      },
+      {
+        "pagePath": "pages/center/main",
+        "text": "我",
+        "iconPath": "assets/images/user.png",
+        "selectedIconPath": "assets/images/user-active.png"
+      }
+    ]
+  }
+}
