@@ -4,6 +4,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    background: #fff;
     .zx_city{
         width:126px;
         text-align:center;
@@ -24,5 +25,20 @@
             font-size: 24px;
             padding:20px;
         }
+    }
+}
+.zx_search_box{
+    background: #fff!important;
+    padding-left:0!important;
+    justify-content: space-between;
+    .van-search__field{
+        border-bottom:1px solid #ccc;
+    }
+    ._view{
+        width:100rpx;
+        border: 1px solid #13227a;
+        text-align: center;
+        background: #13227a;
+        color:#fff;
     }
 }

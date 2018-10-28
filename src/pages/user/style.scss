@@ -1,0 +1,38 @@
+@import url("~mpvue-wxparse/src/wxParse.css");
+.ajust_popup{
+    left:0!important;
+    top:auto!important;
+    bottom:0!important;
+    width:100%;
+}
+.zx_textarea{
+    width:100%;
+    padding:20px;
+    box-sizing: border-box;
+}
+.big_btn{
+    width:100%;
+}
+.zj_container{
+    padding:20px;
+}
+.zx_img_container{
+    font-size: 28px;
+}
+.zx_release{
+    position: relative;
+    .zx_img_container{
+        position: absolute;
+        text-align:right;
+        z-index:11;
+        right:70px;
+        top:20px;
+        img{
+            width:50px;
+            height:50px;
+        }
+    }
+}
+.zx_inputright{
+    text-align: right;
+}

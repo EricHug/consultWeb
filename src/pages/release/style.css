@@ -1,0 +1,5 @@
+@import url("~mpvue-wxparse/src/wxParse.css");
+.ajust_popup {
+  left: 0 !important;
+  width: 100%;
+}

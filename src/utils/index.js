@@ -18,6 +18,26 @@ export function formatTime (date) {
   return `${t1} ${t2}`
 }
 
+/**
+ * @description 判断是否为电话号码
+ * @param str
+ * @returns {boolean}
+ */
+export function isPhoneNumber (str) {
+  const reg = /^[1][3,4,5,7,8][0-9]{9}$/
+  return reg.test(str)
+}
+
+/**
+ *@description 验证密码格式
+ * @param str
+ */
+export function isValidPassword (str) {
+  const reg = /^[a-zA-Z0-9_]\w{5,17}$/
+  return reg.test(str)
+}
+
+
 //-------------------------------------------------------------------------请求的封装
 
 const host = 'https://www.heyuhsuo.xyz/heyushuo';

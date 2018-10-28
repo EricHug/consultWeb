@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "详情",
+  "usingComponents": {
+    "van-field": "/static/vant/field/index",
+    "van-notice-bar": "/static/vant/notice-bar/index",
+    "van-dialog": "/static/vant/dialog/index",
+    "van-toast": "/static/vant/toast/index"
+  }
+}

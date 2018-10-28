@@ -1,0 +1,29 @@
+@import url("~mpvue-wxparse/src/wxParse.css");
+.zx_total{
+    text-align: center;
+    color:#333;
+    padding:40px 0;
+}
+.zj_container{
+    padding:20px;
+}
+.zx_img_container{
+    font-size: 28px;
+}
+.zx_buy{
+    position: relative;
+    .zx_img_container{
+        position: absolute;
+        text-align:right;
+        z-index:11;
+        right:30px;
+        top:14px;
+        img{
+            width:50px;
+            height:50px;
+        }
+    }
+}
+.zx_inputright{
+    text-align: right;
+}

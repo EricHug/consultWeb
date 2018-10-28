@@ -4,13 +4,14 @@
 		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
-		"minified": false,
+		"minified": true,
 		"newFeature": true,
-		"nodeModules": true
+		"nodeModules": true,
+		"uglifyFileName": true
 	},
 	"miniprogramRoot": "dist/",
 	"compileType": "miniprogram",
-	"appid": "wxe15edf070e7e3f5b",
+	"appid": "wx638709e94b40b5f0",
 	"projectname": "zx",
 	"condition": {
 		"search": {

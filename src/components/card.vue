@@ -3,7 +3,7 @@
     <h1>销售代表/导购/店员</h1>
     <p>揭阳普宁洪阳镇街道</p>
     <div class="qy_title">
-      <img src="" alt="">
+      <img src="https://raw.githubusercontent.com/BelinChung/api-mock/master/assets/avatar_hi.png" alt="">
       <span>普宁XXX家具广场</span>
     </div>
   </div>
@@ -19,15 +19,20 @@ export default {
 .card {
   padding: 24px !important;
   box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom:42px;
+  h1{
+    color:#13227a;
+  }
   p {
     color: #a3a3a3;
-    font-size: 24px;
+    font-size: 28px;
     padding: 20px 0;
   }
   .qy_title {
     display: flex;
     flex-direction: row;
     align-items: center;
+    color:#151515;
     img {
       width: 100px;
       height: 100px;
@@ -35,6 +40,9 @@ export default {
       overflow: hidden;
       border: 1px solid #000;
       margin-right:16px;
+    }
+    span{
+      font-size: 30px;
     }
   }
 }

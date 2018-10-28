@@ -1,0 +1,45 @@
+@import url("~mpvue-wxparse/src/wxParse.css");
+.ajust_popup{
+    left:0!important;
+    top:auto!important;
+    bottom:0!important;
+    width:100%;
+}
+.zx_textarea{
+    width:100%;
+    padding:20px;
+    box-sizing: border-box;
+    font-size: 28px;
+    color:#333;
+}
+.zx_textarea_placeholder{
+    font-size: 28px;
+}
+.big_btn{
+    width:100%;
+    padding:0 30px;
+    width:710px;
+    height:88px;
+    line-height:88px!important;
+    text-align: center;
+    font-size: 28px;
+    border:none;
+    border-radius: 44px!important;
+}
+.zj_container{
+    padding:20px;
+}
+.zx_img_container_pa{
+    position: relative;
+    .zx_img_container{
+        position: absolute;
+        text-align:right;
+        z-index:11;
+        right:70px;
+        top:20px;
+        img{
+            width:50px;
+            height:50px;
+        }
+    }
+}
