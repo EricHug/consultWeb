@@ -11,6 +11,16 @@
             <span class="van-cell-text">联系地址</span>
           </view>
         </van-cell>
+        <van-cell v-if="areaText" custom-class="selectCounty" :value="areaText1" @click="chooseArea1" is-link>
+          <view slot="title">
+            <span class="van-cell-text"></span>
+          </view>
+          <picker @change="confirmArea1" range-key="name" :value="index" :range="pickerAreaList1">
+            <view class="picker">
+              当前选择：{{pickerAreaList1[index]['name']}}
+            </view>
+          </picker>
+        </van-cell>
         <van-field :value="address" v-if="!showArea" custom-class="ajust_textarea_1" clearable label=" " type="textarea" placeholder="请输入详细地址" bind:click-icon="onClickIcon" autosize maxlength="2000" :border="true" />
         <div @click="chooseImage('pic1')" class="zx_img_container_pa">
           <van-field label="图片1" readonly use-icon-slot @change="onChange1" :border="true" required is-link/>
@@ -41,12 +51,16 @@
     <van-popup :show="showArea" position="buttom" @close="onClose" custom-class="ajust_popup">
       <van-area v-if="showArea" :value="areaCode" :area-list="areaList" @confirm="confirmArea" />
     </van-popup>
+    <!-- <van-popup :show="showArea1" position="buttom" @close="onClose1" custom-class="ajust_popup">
+      <van-area v-if="showArea1" :columns-num="1" :value="areaCode1" :area-list="areaList1" @confirm="confirmArea1" />
+    </van-popup> -->
   </div>
 </template>
 
 <script>
 import areaList from '@/utils/area.js'
 import wxParse from 'mpvue-wxparse'
+import jieyang from '@/utils/jieyang.js'
 // Use Vuex
 export default {
   components: {
@@ -63,9 +77,35 @@ export default {
     article: '<div style="color:red">我是HTML代码</div>',
     textarea: '',
     pic1: null,
-    pic2: null
+    pic2: null,
+    // 镇
+    showArea1: false,
+    areaList1: null,
+    areaText1: '',
+    areaCode1: '445281003',
+    index: 0
   },
-  onLoad(options){
+  watch: {
+    areaCode(val) {
+      this.areaList1 = jieyang.town[val]
+    }
+  },
+  computed:{
+    pickerAreaList1(){
+      let areaList1 = this.areaList1
+      let result = []
+      for(let i in areaList1){
+        if(areaList1.hasOwnProperty(i)){
+          result.push({
+            id: i,
+            name: areaList1[i]
+          })
+        }
+      }
+      return result
+    }
+  },
+  onLoad(options) {
     this.time = options.time
   },
   methods: {
@@ -112,6 +152,9 @@ export default {
     chooseArea() {
       this.showArea = true
     },
+    chooseArea1() {
+      this.showArea1 = true
+    },
     confirmArea(event) {
       // event.mp.detail 为当前输入的值
       var value = event.mp.detail
@@ -124,11 +167,25 @@ export default {
         })
         this.areaText = areaText
         this.areaCode = value.values ? value.values[2].code : '445200'
+        // 镇
+        let codeObj = jieyang.town[this.areaCode]
+        let firstKey = Object.keys(codeObj)[0]
+        this.areaCode1 = firstKey
+        this.index = 0
       }
       this.showArea = false
     },
+    confirmArea1(event) {
+      // event.mp.detail 为当前输入的值
+      var value = event.mp.detail
+      console.log(value)
+      this.index = value.value
+    },
     onClose() {
       this.showArea = false
+    },
+    onClose1() {
+      this.showArea1 = false
     },
     onChange1(event) {
       // event.mp.detail 为当前输入的值

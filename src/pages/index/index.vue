@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="zx_header">
-      <div class="zx_city">揭阳&nbsp;&nbsp;&nbsp;
+      <div class="zx_city" @click="goTo('/pages/selectZone/main')">揭阳&nbsp;&nbsp;&nbsp;
         <span style="color:#ddd;">|</span>
       </div>
       <div class="zx_search">
@@ -9,6 +9,9 @@
           <view slot="action" bind:tap="onSearch">搜索</view>
         </van-search>
       </div>
+    </div>
+    <div class="zx_zone" v-if="code && code != '445200'">
+      <span @click="goTo('/pages/selectZone/main')">当前区域：{{text}}</span>
     </div>
     <div class="zx_content">
       <div class="zx_content_item">
@@ -23,6 +26,7 @@
 
 <script>
 import card from '@/components/card'
+import { mapState } from 'vuex'
 
 export default {
   data() {
@@ -32,6 +36,13 @@ export default {
   },
   components: {
     card
+  },
+  computed: {
+    ...mapState(['code', 'text'])
+  },
+  mounted() {
+    console.log('code', this.code)
+    console.log('text', this.text)
   },
   methods: {
     onChange(event) {
@@ -46,8 +57,7 @@ export default {
         url: url
       })
     },
-  },
-  created() { }
+  }
 }
 </script>
 

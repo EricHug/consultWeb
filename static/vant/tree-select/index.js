@@ -35,12 +35,12 @@ VantComponent({
   methods: {
     // 当一个子项被选择时
     onSelectItem: function onSelectItem(event) {
-      this.$emit('click-item', event.currentTarget.dataset.item);
+      this.$emit('clickItem', event.currentTarget.dataset.item);
     },
     // 当一个导航被点击时
     onClickNav: function onClickNav(event) {
       var index = event.currentTarget.dataset.index;
-      this.$emit('click-nav', {
+      this.$emit('clickNav', {
         index: index
       });
     },

@@ -1,11 +1,12 @@
 {
   "pages": [
     "pages/index/main",
+    "pages/release/main",
+    "pages/selectZone/main",
     "pages/center/main",
     "pages/user/main",
     "pages/post/main",
     "pages/login/main",
-    "pages/release/main",
     "pages/register/main",
     "pages/buy/main"
   ],

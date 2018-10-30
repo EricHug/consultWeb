@@ -18,7 +18,7 @@
     }
 }
 .zx_content{
-    padding:32px;
+    padding:0 32px;
     .zx_content_item{
         >p{
             color:#a3a3a3;
@@ -41,4 +41,9 @@
         background: #13227a;
         color:#fff;
     }
+}
+.zx_zone{
+    font-size: 28px;
+    color:#333;
+    padding:0 46px;
 }

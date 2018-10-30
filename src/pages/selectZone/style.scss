@@ -1,0 +1,19 @@
+.container{
+    background-color:#f8f8f8;
+}
+.sz_buttons{
+    font-size: 30px;
+    padding:30px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    span{
+        color:#a3a3a3;
+    }
+    .zx_bgColor{
+        margin:0 30px;
+    }
+}
+.setHeight{
+    height:600px;
+}
