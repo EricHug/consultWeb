@@ -43,8 +43,8 @@
         </div>
       </div>
     </div>
-    <van-notice-bar mode="closeable" text="如需修改信息，请致电1353XXXXXXXX" />
-    <van-notice-bar mode="closeable" text="打电话时请在百事通网看到的" />
+    <van-notice-bar mode="closeable" speed="20" text="为防欺诈，先打电话核实双方的资料，以免发生误会" />
+    <van-notice-bar mode="closeable" speed="20" text="打电话时请在百事通商务信息咨询网看到的" />
     <!--弹窗-->
     <van-dialog use-slot :show="show" show-cancel-button @close="onClose" @confirm="onConfirm" title="举报">
       <van-field :value="reportTitle" label="举报对象" disabled/>

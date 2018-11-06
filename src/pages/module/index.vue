@@ -13,17 +13,6 @@
     <div class="zx_zone" v-if="code && code != '445200'">
       <span @click="goTo('/pages/selectZone/main')">当前区域：{{text}}</span>
     </div>
-    <div class="zx_member">
-      <van-notice-bar custom-class="zx_notice" text="总普通会员：999999"/>
-    </div>
-    <div class="zx_nav">
-      <ul>
-        <li v-for="(item,index) in navList" :key="item.txt" @click="goTo('/pages/module/main?id='+index)">
-          <img :src="item.pic" alt="">
-          <p>{{item.txt}}</p>
-        </li>
-      </ul>
-    </div>
     <div class="zx_content">
       <div class="zx_content_item">
         <p>9:00</p>
@@ -42,6 +31,7 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
+      txt: '',
       navList:[
         {
           txt:'招聘求职',
@@ -95,6 +85,13 @@ export default {
   mounted() {
     console.log('code', this.code)
     console.log('text', this.text)
+  },
+  onLoad(options){
+    console.log(this.navList.length)
+    let txt = this.navList[options.id]['txt']
+    wx.setNavigationBarTitle({
+      title: txt
+    })
   },
   methods: {
     onChange(event) {

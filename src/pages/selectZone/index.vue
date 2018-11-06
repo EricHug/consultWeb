@@ -36,10 +36,13 @@ export default {
     confirmZone() {
       let code = this.code
       let text = this.text
-      this.$store.commit('alterZone',{code,text})
-      wx.switchTab({
-        url: '/pages/index/main'
+      this.$store.commit('alterZone', { code, text })
+      wx.navigateBack({
+        delta: 1
       })
+      // wx.switchTab({
+      //   url: '/pages/index/main'
+      // })
     },
     handleData({
       district,
@@ -91,7 +94,7 @@ export default {
     this.items = this.handleData(jieyang)
     console.log(this.items)
   },
-  mounted(){
+  mounted() {
     this.code = this.$store.state.code
     this.text = this.$store.state.text
   }
