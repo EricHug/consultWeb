@@ -8,7 +8,10 @@
     "pages/post/main",
     "pages/login/main",
     "pages/register/main",
-    "pages/buy/main"
+    "pages/module/main",
+    "pages/job/main",
+    "pages/buy/main",
+    "pages/protocol/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -19,7 +19,7 @@
           </li>
           <li>
             <label>联系电话：</label>
-            <span>13530000000</span>
+            <span @click="call" class="calllink">{{phone}}</span>
           </li>
           <li>
             <label>联系地址：</label>
@@ -44,11 +44,11 @@
       </div>
     </div>
     <van-notice-bar mode="closeable" speed="20" text="为防欺诈，先打电话核实双方的资料，以免发生误会" />
-    <van-notice-bar mode="closeable" speed="20" text="打电话时请在百事通商务信息咨询网看到的" />
+    <van-notice-bar mode="closeable" speed="20" text="打电话时请说在百事通商务信息咨询网看到的" />
     <!--弹窗-->
     <van-dialog use-slot :show="show" show-cancel-button @close="onClose" @confirm="onConfirm" title="举报">
       <van-field :value="reportTitle" label="举报对象" disabled/>
-      <van-field :value="reportReason" label="投诉理由" :border="false" placeholder="请输入投诉理由" @change="onChange1"/>
+      <van-field :value="reportReason" label="投诉理由" :border="false" placeholder="请输入投诉理由" @change="onChange1" />
     </van-dialog>
     <van-toast id="van-toast" />
   </div>
@@ -62,7 +62,8 @@ export default {
     return {
       reportTitle: '汽车导购',
       reportReason: '',
-      show: false
+      show: false,
+      phone: '18475127778'
     }
   },
   components: {
@@ -91,9 +92,35 @@ export default {
       console.log(value)
       this.reportReason = value
     },
-    toReport(){
+    toReport() {
       this.show = true
       this.reportReason = ''
+    },
+    call() {
+      var that = this
+      //显示“呼叫”、“添加联系人”弹窗
+      wx.showActionSheet({
+        itemList: ['呼叫', '添加联系人'],
+        success: function (res) {
+          console.log("点击电话：", res)
+          if (res.tapIndex == 0) {//直接呼叫
+            wx.makePhoneCall({
+              phoneNumber: that.phone,
+              success: function (res_makephone) {
+                console.log("呼叫电话返回：", res_makephone)
+              }
+            })
+          } else if (res.tapIndex == 1) {//添加联系人
+            wx.addPhoneContact({
+              firstName: '',
+              mobilePhoneNumber: that.phone,
+              success: function (res_addphone) {
+                console.log("电话添加联系人返回：", res_addphone)
+              }
+            })
+          }
+        }
+      })
     }
   },
   mounted() {

@@ -19,6 +19,33 @@ export function formatTime (date) {
 }
 
 /**
+ * @description 字符串转化为对象
+ * @param strDes {string} 字符串
+ * @param delimiter {string} 分隔符
+ * @returns {object}
+ */
+export function parseStrObjByFor(strDes, delimiter) {
+  var obj = {};
+  if (strDes == null || strDes == '') {
+    return obj;
+  }
+  delimiter = delimiter || ";";
+  var arr = strDes.split(delimiter);
+  var k, v, sub;
+  for (var i = 0, len = arr.length; i < len; i++) {
+    if (arr[i] !== '') {
+      sub = arr[i].split("=");
+      k = sub[0];
+      v = sub[1];
+      if (k !== '') {
+        obj[k] = v;
+      }
+    }
+  }
+  return obj;
+}
+
+/**
  * @description 判断是否为电话号码
  * @param str
  * @returns {boolean}
@@ -40,29 +67,44 @@ export function isValidPassword (str) {
 
 //-------------------------------------------------------------------------请求的封装
 
-const host = 'https://www.heyuhsuo.xyz/heyushuo';
+const host = 'https://www.aiheart.top';
 export {
   host
 }
 //请求封装
 function request(url, method, data, header = {}) {
-  wx.showLoading({
-    title: '加载中' //数据请求前loading
-  })
+  // console.log(parseStrObjByFor('jesssionid=234324234;phpid=3333'))
+  // wx.showLoading({
+  //   title: '加载中' //数据请求前loading
+  // })
+  const session_id = wx.getStorageSync('JSESSIONID')
+  header['content-type'] = 'application/x-www-form-urlencoded'
+  if (session_id != '' && session_id != null) {
+    header['cookie'] = 'JSESSIONID=' + session_id
+  }
   return new Promise((resolve, reject) => {
     wx.request({
       url: host + url, //仅为示例，并非真实的接口地址
-      method: method,
-      data: data,
-      header: {
-        'content-type': 'application/json' // 默认值
-      },
+      method,
+      data,
+      header,
       success: function (res) {
-        wx.hideLoading();
+        // wx.hideLoading();
+        if (session_id == "" || session_id == null) {
+          const JSESSIONID = parseStrObjByFor(res.header['Set-Cookie'])['JSESSIONID']
+          wx.setStorageSync('JSESSIONID', JSESSIONID) //如果本地没有就说明第一次请求 把返回的session id 存入本地
+        }
+        console.log(res)
+        if(res.data.status == 2){
+          // 未登录
+          wx.redirectTo({
+            url: '/pages/login/main'
+          })
+        }
         resolve(res.data)
       },
       fail: function (error) {
-        wx.hideLoading();
+        // wx.hideLoading();
         reject(false)
       },
       complete: function () {

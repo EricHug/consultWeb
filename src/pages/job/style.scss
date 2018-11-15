@@ -80,17 +80,30 @@
     line-height:50px!important;
     padding:0 10px!important;
 }
-
-.tip{
-    text-align: center;
-    img{
-        width:130px;
-        height:130px;
-        margin-top:40px;
+.job_content{
+    padding:40px 0 12px;
+    border-bottom: 1px solid #ccc;
+    h1{
+        font-size: 32px;
+        span{
+            padding-bottom:6px;
+            margin:20px 0;
+            border-bottom:4px solid #13227a;
+        }
     }
-    p{
-        color:#dbdbdb;
+    .jc_item{
+        width:100%;
+        padding:20px 0;
         font-size: 30px;
-        text-align: center;
+        color:#333;
+        span{
+            width: 25%;
+            float: left;
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            line-height: 66px;
+        }
     }
 }

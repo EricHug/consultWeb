@@ -2,8 +2,8 @@
   <div class="container">
     <div class="zx_center_header" @click="goTo('/pages/user/main')">
       <div class="zx_txt">
-        <div v-if="phone">
-          <div class="zx_phone">13530000000</div>
+        <div v-if="user">
+          <div class="zx_phone">{{user?user.phone:'--'}}</div>
           <navigator url="" open-type="redirect" class="zx_user_edit" hover-class="other-navigator-hover">查看并编辑个人信息</navigator>
         </div>
         <div v-else>未登录</div>
@@ -28,10 +28,14 @@
 <script>
 // Use Vuex
 import store from './store'
+import {
+  get,
+  post
+} from "../../utils"
 
 export default {
   data: {
-    phone: ''
+    user: null
   },
   computed: {
     count() {
@@ -47,11 +51,11 @@ export default {
   },
   methods: {
     checkLogin() {
-      var phone = wx.getStorageSync('phone')
-      if (!phone) {
+      var user = wx.getStorageSync('user')
+      if (!user) {
         this.jumpTo('/pages/login/main')
       } else {
-        this.phone = phone
+        this.user = user
       }
       wx.hideLoading()
     },
@@ -73,11 +77,15 @@ export default {
         })
       }
     },
-    logout() {
-      wx.clearStorageSync()
-      this.jumpTo('/pages/login/main')
+    async logout() {
+      const data = await post('/recruitment/user/logout.do')
+      console.log(data)
+      if (data.status == 0) {
+        wx.removeStorageSync('user')
+        this.jumpTo('/pages/login/main')
+      }
     },
-    checkBuyState(){
+    checkBuyState() {
       // this.goTo('/pages/buy/main')
       this.goTo('/pages/release/main')
     }

@@ -14,11 +14,15 @@
       <span @click="goTo('/pages/selectZone/main')">当前区域：{{text}}</span>
     </div>
     <div class="zx_content">
-      <div class="zx_content_item">
+      <!-- <div class="zx_content_item">
         <p>9:00</p>
         <div @click="goTo('/pages/post/main')">
           <card></card>
         </div>
+      </div> -->
+      <div class="tip">
+        <img src="../../../static/assets/images/empty.png" alt="" />
+        <p>暂无数据</p>
       </div>
     </div>
   </div>
@@ -32,46 +36,47 @@ export default {
   data() {
     return {
       txt: '',
-      navList:[
+      value: '',
+      navList: [
         {
-          txt:'招聘求职',
-          pic:'/static/assets/images/nav_0.png',
-          url:''
+          txt: '招聘求职',
+          pic: '/static/assets/images/nav_0.png',
+          url: ''
         },
         {
-          txt:'拼车信息',
-          pic:'/static/assets/images/nav_1.png',
-          url:''
+          txt: '拼车信息',
+          pic: '/static/assets/images/nav_1.png',
+          url: ''
         },
         {
-          txt:'二手交易',
-          pic:'/static/assets/images/nav_2.png',
-          url:''
+          txt: '二手交易',
+          pic: '/static/assets/images/nav_2.png',
+          url: ''
         },
         {
-          txt:'车辆买卖',
-          pic:'/static/assets/images/nav_3.png',
-          url:''
+          txt: '车辆买卖',
+          pic: '/static/assets/images/nav_3.png',
+          url: ''
         },
         {
-          txt:'生活服务',
-          pic:'/static/assets/images/nav_4.png',
-          url:''
+          txt: '生活服务',
+          pic: '/static/assets/images/nav_4.png',
+          url: ''
         },
         {
-          txt:'房屋租售',
-          pic:'/static/assets/images/nav_5.png',
-          url:''
+          txt: '房屋租售',
+          pic: '/static/assets/images/nav_5.png',
+          url: ''
         },
         {
-          txt:'宠物服务',
-          pic:'/static/assets/images/nav_6.png',
-          url:''
+          txt: '宠物服务',
+          pic: '/static/assets/images/nav_6.png',
+          url: ''
         },
         {
-          txt:'绿色信息',
-          pic:'/static/assets/images/nav_7.png',
-          url:''
+          txt: '绿色信息',
+          pic: '/static/assets/images/nav_7.png',
+          url: ''
         }
       ]
     }
@@ -86,12 +91,13 @@ export default {
     console.log('code', this.code)
     console.log('text', this.text)
   },
-  onLoad(options){
+  onLoad(options) {
     console.log(this.navList.length)
     let txt = this.navList[options.id]['txt']
     wx.setNavigationBarTitle({
       title: txt
     })
+    this.value = options.keyword
   },
   methods: {
     onChange(event) {

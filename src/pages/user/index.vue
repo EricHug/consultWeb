@@ -10,9 +10,9 @@
         </div>
         <van-field label="密码" readonly value="***" input-align="right" @click="showPasswordConfirm=true" is-link/>
       </van-cell-group>
-      <div class="zx_button_box mgt20">
+      <!-- <div class="zx_button_box mgt20">
         <van-button size="normal" round block type="primary" custom-class="zx_bgColor" @click="save">保存</van-button>
-      </div>
+      </div> -->
     </div>
     <van-popup :show="showArea" position="buttom" @close="onClose" custom-class="ajust_popup">
       <van-area v-if="showArea" :value="areaCode" :area-list="areaList" @confirm="confirmArea" />
@@ -20,6 +20,7 @@
     <!-- 密码确认框 -->
     <van-dialog use-slot :show="showPasswordConfirm" title="修改密码" show-cancel-button close-on-click-overlay @close="onCancel" @cancel="onCancel" @confirm="onConfirm">
       <van-cell-group>
+        <van-field :value="password" type="passwordOld" label="旧密码" placeholder="请输入旧密码" :error-message="passwordOldError" @change="onChange0" />
         <van-field :value="password" type="password" label="新密码" placeholder="请输入新密码" :error-message="passwordError" @change="onChange1" />
         <van-field :value="passwordConfirm" type="password" label="密码确认" :border="false" placeholder="请输入新密码确认" :error-message="passwordConfirmError" @change="onChange2" />
       </van-cell-group>
@@ -35,9 +36,13 @@ import {
 } from '@/utils/index'
 import fake from '@/utils/fake'
 import Toast from '@/../static/vant/toast/toast'
-import Dialog from '@/../static/vant/dialog/dialog';
+import Dialog from '@/../static/vant/dialog/dialog'
 import areaList from '@/utils/area.js'
-import { setTimeout } from 'timers';
+import { setTimeout } from 'timers'
+import {
+  get,
+  post
+} from "../../utils"
 // Use Vuex
 export default {
   components: {
@@ -46,8 +51,10 @@ export default {
     avatarUrl: null,
     showPasswordConfirm: false,
     hiddenPassword: '***',
+    passwordOld: '',
     password: '',
     passwordConfirm: '',
+    passwordOldError: '',
     passwordError: '',
     passwordConfirmError: ''
   },
@@ -61,8 +68,22 @@ export default {
         success(res) {
           // tempFilePath可以作为img标签的src属性显示图片
           const tempFilePaths = res.tempFilePaths
-          self.avatarUrl = tempFilePaths
-        }
+          self.avatarUrl = tempFilePaths[0]
+          wx.uploadFile({
+            url: 'https://www.aiheart.top/recruitment/user/photo.do',
+            filePath: tempFilePaths[0],
+            name: 'uploadPhoto',
+            formData: {
+              'cookie': 'JSESSIONID='+wx.getStorageSync('JSESSIONID'),
+            },
+            success: function (res) {
+              console.log(res);
+            },
+            fail: function (res) {
+              console.log("tt");
+            }
+          })
+        },
       })
     },
     onConfirm() {
@@ -87,7 +108,7 @@ export default {
         Toast.fail('密码不一致')
         return
       }
-       Toast.success('保存成功')
+      Toast.success('保存成功')
     },
     onCancel() {
       //
@@ -96,6 +117,14 @@ export default {
     },
     save() {
       Toast.success('保存成功');
+    },
+    onChange0(event) {
+      // event.mp.detail 为当前输入的值
+      var value = event.mp.detail
+      console.log(value)
+      this.passwordOld = value
+      //
+      this.passwordOldError = ''
     },
     onChange1(event) {
       // event.mp.detail 为当前输入的值

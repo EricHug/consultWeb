@@ -4,8 +4,8 @@
       <van-cell-group>
         <!-- <van-field :value="time+'个月'" required readonly label="发布时限" /> -->
         <van-field :value="title" required clearable label="标题" placeholder="请输入标题" bind:click-icon="onClickIcon" @change="onChange1" />
-        <van-field :value="contact" required clearable label="联系人" placeholder="请输入联系人" bind:click-icon="onClickIcon" @change="onChange2" />
-        <van-field :value="phone" required clearable label="联系电话" placeholder="请输入联系电话" bind:click-icon="onClickIcon" @change="onChange3" />
+        <van-field :value="linkman" required clearable label="联系人" placeholder="请输入联系人" bind:click-icon="onClickIcon" @change="onChange2" />
+        <van-field :value="linkPhone" required clearable label="联系电话" placeholder="请输入联系电话" bind:click-icon="onClickIcon" @change="onChange3" />
         <van-cell :value="areaText" required @click="chooseArea" is-link>
           <view slot="title">
             <span class="van-cell-text">联系地址</span>
@@ -45,7 +45,7 @@
       <!--省市区-->
       <div class="zj_container">
         <!-- <van-button size="normal" :disabled="subdisabled" round block type="primary" custom-class="zx_bgColor" @click="submit">提交</van-button> -->
-        <button formType="submit" :disabled="subdisabled" class="weui-btn zx_bgColor big_btn" type="primary" size="mini" @click="goTo('/pages/buy/main')">提交</button>
+        <button formType="submit" :disabled="subdisabled" class="weui-btn zx_bgColor big_btn" type="primary" size="mini" @click="submitData">提交</button>
       </div>
     </form>
     <van-popup :show="showArea" position="buttom" @close="onClose" custom-class="ajust_popup">
@@ -61,6 +61,10 @@
 import areaList from '@/utils/area.js'
 import wxParse from 'mpvue-wxparse'
 import jieyang from '@/utils/jieyang.js'
+import {
+  get,
+  post
+} from "../../utils"
 // Use Vuex
 export default {
   components: {
@@ -68,16 +72,20 @@ export default {
   },
   data: {
     title: '',
-    contact: '',
-    phone: '',
+    linkman: '',
+    linkPhone: '',
     showArea: false,
     areaList: areaList,
     areaText: '',
-    areaCode: '445200',
+    areaCode: '445200', // 区
     article: '<div style="color:red">我是HTML代码</div>',
     textarea: '',
     pic1: null,
     pic2: null,
+    // 省
+    province: '440000',//（广东）
+    // 市
+    city: '445200',//（揭阳）
     // 镇
     showArea1: false,
     areaList1: null,
@@ -90,12 +98,12 @@ export default {
       this.areaList1 = jieyang.town[val]
     }
   },
-  computed:{
-    pickerAreaList1(){
+  computed: {
+    pickerAreaList1() {
       let areaList1 = this.areaList1
       let result = []
-      for(let i in areaList1){
-        if(areaList1.hasOwnProperty(i)){
+      for (let i in areaList1) {
+        if (areaList1.hasOwnProperty(i)) {
           result.push({
             id: i,
             name: areaList1[i]
@@ -109,6 +117,22 @@ export default {
     this.time = options.time
   },
   methods: {
+    async submitData() {
+      let self = this
+      const params = {
+        title: this.title,
+        linkman: this.linkman,
+        linkPhone: this.linkPhone,
+        province: this.province,
+        city: this.city,
+        district: this.areaCode,
+        town: this.areaCode1,
+        address: this.address,
+        information: this.textarea
+      }
+      const data = await post('/message/insertMessage.do',params)
+      console.log(data)
+    },
     goTo: function (url) {
       console.log(url)
       wx.navigateTo({
@@ -180,6 +204,7 @@ export default {
       var value = event.mp.detail
       console.log(value)
       this.index = value.value
+      this.areaCode1 = this.pickerAreaList1[this.index]['id']
     },
     onClose() {
       this.showArea = false
@@ -197,13 +222,13 @@ export default {
       // event.mp.detail 为当前输入的值
       var value = event.mp.detail
       console.log(value)
-      this.contact = value
+      this.linkman = value
     },
     onChange3(event) {
       // event.mp.detail 为当前输入的值
       var value = event.mp.detail
       console.log(value)
-      this.phone = value
+      this.linkPhone = value
     }
   }
 }
