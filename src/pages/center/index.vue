@@ -9,12 +9,13 @@
         <div v-else>未登录</div>
       </div>
       <div class="zx_user_pic">
-        <img src="https://raw.githubusercontent.com/BelinChung/api-mock/master/assets/avatar_hi.png">
+        <img :src="user.photo" alt="" v-if="user &&user.photo">
+        <img src="https://raw.githubusercontent.com/BelinChung/api-mock/master/assets/avatar_hi.png" v-else/>
       </div>
     </div>
     <div class="zx_center_nav">
       <van-cell-group>
-        <van-cell custom-class="zx_cell_box" icon="description" title="信息发布" @click="checkBuyState" is-link/>
+        <van-cell custom-class="zx_cell_box" icon="description" title="信息发布" @click="checkBuyState" value="未发布" is-link/>
       </van-cell-group>
     </div>
     <div class="zx_center_footer">
@@ -51,13 +52,23 @@ export default {
   },
   methods: {
     checkLogin() {
-      var user = wx.getStorageSync('user')
-      if (!user) {
+      var JSESSIONID = wx.getStorageSync('JSESSIONID')
+      if (!JSESSIONID) {
         this.jumpTo('/pages/login/main')
       } else {
-        this.user = user
+        // 获取用户信息
+        this.getUserData()
       }
       wx.hideLoading()
+    },
+    async getUserData() {
+      const data = await get('/recruitment/user/selectUserInfoByUserId.do')
+      if (data.status == 0) {
+        this.user = data.data
+        wx.setStorageSync('user', data.data)
+      } else {
+        Toast.fail(data.msg)
+      }
     },
     goTo: function (url) {
       console.log(url)
@@ -82,6 +93,7 @@ export default {
       console.log(data)
       if (data.status == 0) {
         wx.removeStorageSync('user')
+        wx.removeStorageSync('JSESSIONID')
         this.jumpTo('/pages/login/main')
       }
     },

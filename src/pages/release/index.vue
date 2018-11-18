@@ -116,7 +116,17 @@ export default {
   onLoad(options) {
     this.time = options.time
   },
+  mounted(){
+    this.getCategory()
+  },
   methods: {
+    async getCategory() {
+      let self = this
+      const params = {
+      }
+      const data = await get('/recruitment/user/selectUserInfoByUserId.do')
+      console.log(data)
+    },
     async submitData() {
       let self = this
       const params = {

@@ -99,6 +99,8 @@
           mask: true,
           message: '登录中...'
         })
+        // 置空
+        wx.removeStorageSync('JSESSIONID')
         const data = await post('/recruitment/user/login.do', {
           phone: this.phone,
           password: this.password

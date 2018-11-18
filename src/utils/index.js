@@ -113,11 +113,11 @@ function request(url, method, data, header = {}) {
     })
   })
 }
-export function get(url, data) {
-  return request(url, 'GET', data)
+export function get(url, data,header = {}) {
+  return request(url, 'GET', data,header)
 }
-export function post(url, data) {
-  return request(url, 'POST', data)
+export function post(url, data,header = {}) {
+  return request(url, 'POST', data,header)
 }
 
 //-------------------------------------------------------------------------请求的封装

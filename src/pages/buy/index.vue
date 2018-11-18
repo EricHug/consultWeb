@@ -21,9 +21,9 @@
 <script>
 import fake from '@/utils/fake'
 import Toast from '@/../static/vant/toast/toast'
-import Dialog from '@/../static/vant/dialog/dialog';
+import Dialog from '@/../static/vant/dialog/dialog'
 import areaList from '@/utils/area.js'
-import { setTimeout } from 'timers';
+import { setTimeout } from 'timers'
 // Use Vuex
 export default {
   components: {
