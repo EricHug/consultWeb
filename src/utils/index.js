@@ -1,9 +1,10 @@
-function formatNumber (n) {
+function formatNumber(n) {
   const str = n.toString()
   return str[1] ? str : `0${str}`
 }
 
-export function formatTime (date) {
+export function formatTime(time) {
+  const date = new Date(time)
   const year = date.getFullYear()
   const month = date.getMonth() + 1
   const day = date.getDate()
@@ -17,6 +18,41 @@ export function formatTime (date) {
 
   return `${t1} ${t2}`
 }
+
+// export function formatTime(time, option) {
+//   const d = new Date(time)
+//   const now = Date.now()
+
+//   console.log(now,time)
+//   const diff = (now - time) / 1000
+//   console.log(diff)
+
+//   if (diff < 30) {
+//     return '刚刚'
+//   } else if (diff < 3600) {
+//     // less 1 hour
+//     return Math.ceil(diff / 60) + '分钟前'
+//   } else if (diff < 3600 * 24) {
+//     return Math.ceil(diff / 3600) + '小时前'
+//   } else if (diff < 3600 * 24 * 2) {
+//     return '1天前'
+//   }
+//   if (option) {
+//     return parseTime(time, option)
+//   } else {
+//     return (
+//       d.getMonth() +
+//       1 +
+//       '月' +
+//       d.getDate() +
+//       '日' +
+//       d.getHours() +
+//       '时' +
+//       d.getMinutes() +
+//       '分'
+//     )
+//   }
+// }
 
 /**
  * @description 字符串转化为对象
@@ -50,7 +86,7 @@ export function parseStrObjByFor(strDes, delimiter) {
  * @param str
  * @returns {boolean}
  */
-export function isPhoneNumber (str) {
+export function isPhoneNumber(str) {
   const reg = /^[1][3,4,5,7,8][0-9]{9}$/
   return reg.test(str)
 }
@@ -59,7 +95,7 @@ export function isPhoneNumber (str) {
  *@description 验证密码格式
  * @param str
  */
-export function isValidPassword (str) {
+export function isValidPassword(str) {
   const reg = /^[a-zA-Z0-9_]\w{5,17}$/
   return reg.test(str)
 }
@@ -94,13 +130,13 @@ function request(url, method, data, header = {}) {
           const JSESSIONID = parseStrObjByFor(res.header['Set-Cookie'])['JSESSIONID']
           wx.setStorageSync('JSESSIONID', JSESSIONID) //如果本地没有就说明第一次请求 把返回的session id 存入本地
         }
-        console.log(res)
-        if(res.data.status == 2){
+        if (res.data.status == 2) {
           // 未登录
           wx.redirectTo({
             url: '/pages/login/main'
           })
         }
+        console.log(res.data)
         resolve(res.data)
       },
       fail: function (error) {
@@ -113,11 +149,11 @@ function request(url, method, data, header = {}) {
     })
   })
 }
-export function get(url, data,header = {}) {
-  return request(url, 'GET', data,header)
+export function get(url, data, header = {}) {
+  return request(url, 'GET', data, header)
 }
-export function post(url, data,header = {}) {
-  return request(url, 'POST', data,header)
+export function post(url, data, header = {}) {
+  return request(url, 'POST', data, header)
 }
 
 //-------------------------------------------------------------------------请求的封装

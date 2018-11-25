@@ -9,9 +9,9 @@
     "pages/login/main",
     "pages/register/main",
     "pages/module/main",
+    "pages/protocol/main",
     "pages/job/main",
-    "pages/buy/main",
-    "pages/protocol/main"
+    "pages/buy/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

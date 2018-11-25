@@ -31,54 +31,15 @@
 <script>
 import card from '@/components/card'
 import { mapState } from 'vuex'
+import configuration from '@/utils/configuration.json'
+
 
 export default {
   data() {
     return {
       txt: '',
       value: '',
-      navList: [
-        {
-          txt: '招聘求职',
-          pic: '/static/assets/images/nav_0.png',
-          url: ''
-        },
-        {
-          txt: '拼车信息',
-          pic: '/static/assets/images/nav_1.png',
-          url: ''
-        },
-        {
-          txt: '二手交易',
-          pic: '/static/assets/images/nav_2.png',
-          url: ''
-        },
-        {
-          txt: '车辆买卖',
-          pic: '/static/assets/images/nav_3.png',
-          url: ''
-        },
-        {
-          txt: '生活服务',
-          pic: '/static/assets/images/nav_4.png',
-          url: ''
-        },
-        {
-          txt: '房屋租售',
-          pic: '/static/assets/images/nav_5.png',
-          url: ''
-        },
-        {
-          txt: '宠物服务',
-          pic: '/static/assets/images/nav_6.png',
-          url: ''
-        },
-        {
-          txt: '绿色信息',
-          pic: '/static/assets/images/nav_7.png',
-          url: ''
-        }
-      ]
+      navList: configuration.navList
     }
   },
   components: {

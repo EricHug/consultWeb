@@ -1,59 +1,78 @@
 <template>
   <div class="container">
     <div class="zx_release">
-      <van-cell-group>
-        <!-- <van-field :value="time+'个月'" required readonly label="发布时限" /> -->
-        <van-field :value="title" required clearable label="标题" placeholder="请输入标题" bind:click-icon="onClickIcon" @change="onChange1" />
-        <van-field :value="linkman" required clearable label="联系人" placeholder="请输入联系人" bind:click-icon="onClickIcon" @change="onChange2" />
-        <van-field :value="linkPhone" required clearable label="联系电话" placeholder="请输入联系电话" bind:click-icon="onClickIcon" @change="onChange3" />
-        <van-cell :value="areaText" required @click="chooseArea" is-link>
-          <view slot="title">
-            <span class="van-cell-text">联系地址</span>
-          </view>
-        </van-cell>
-        <van-cell v-if="areaText" custom-class="selectCounty" :value="areaText1" @click="chooseArea1" is-link>
-          <view slot="title">
-            <span class="van-cell-text"></span>
-          </view>
-          <picker @change="confirmArea1" range-key="name" :value="index" :range="pickerAreaList1">
-            <view class="picker">
-              当前选择：{{pickerAreaList1[index]['name']}}
+      <form @submit="evaSubmit">
+        <van-cell-group>
+          <!-- <van-field :value="time+'个月'" required readonly label="发布时限" /> -->
+          <van-field :value="title" required clearable label="标题" placeholder="请输入标题" bind:click-icon="onClickIcon"
+            @change="onChange1" />
+          <van-field :value="linkman" required clearable label="联系人" placeholder="请输入联系人" bind:click-icon="onClickIcon"
+            @change="onChange2" />
+          <van-field :value="linkphone" required clearable label="联系电话" placeholder="请输入联系电话" bind:click-icon="onClickIcon"
+            @change="onChange3" />
+          <van-cell :value="areaText" required @click="chooseArea" is-link>
+            <view slot="title">
+              <span class="van-cell-text">联系地址</span>
             </view>
-          </picker>
-        </van-cell>
-        <van-field :value="address" v-if="!showArea" custom-class="ajust_textarea_1" clearable label=" " type="textarea" placeholder="请输入详细地址" bind:click-icon="onClickIcon" autosize maxlength="2000" :border="true" />
-        <div @click="chooseImage('pic1')" class="zx_img_container_pa">
-          <van-field label="图片1" readonly use-icon-slot @change="onChange1" :border="true" required is-link/>
-          <view class="zx_img_container">
-            <img :src="pic1">
-          </view>
+          </van-cell>
+          <!--选择镇-->
+          <van-cell v-if="areaText" custom-class="selectCounty" :value="areaText1" @click="chooseArea1" is-link>
+            <view slot="title">
+              <span class="van-cell-text"></span>
+            </view>
+            <picker @change="confirmArea1" range-key="name" :value="index" :range="pickerAreaList1">
+              <view class="picker">
+                当前选择：{{pickerAreaList1[index]['name']}}
+              </view>
+            </picker>
+          </van-cell>
+          <van-field :value="address" v-if="!showArea" custom-class="ajust_textarea_1" clearable label=" " type="textarea"
+            placeholder="请输入详细地址" bind:click-icon="onClickIcon" autosize maxlength="2000" :border="true" name="address" />
+          <div @click="chooseImage('messageImage1')" class="zx_img_container_pa">
+            <van-field label="图片1" readonly use-icon-slot @change="onChange1" :border="true" required is-link />
+            <view class="zx_img_container">
+              <img :src="messageImage1">
+            </view>
+          </div>
+          <div @click="chooseImage('messageImage2')" class="zx_img_container_pa">
+            <van-field label="图片2" readonly use-icon-slot @change="onChange2" :border="true" is-link />
+            <view class="zx_img_container">
+              <img :src="messageImage2">
+            </view>
+          </div>
+        </van-cell-group>
+        <van-cell-group>
+          <van-field required label="详细信息" :border="false" disabled/>
+        </van-cell-group>
+        <textarea :value="information" v-if="!showArea" class="zx_textarea" placeholder-class="zx_textarea_placeholder"
+          name="information" placeholder="最多2000字" id="" cols="30" rows="10" maxlength="2000" @blur="confirmTextarea" />
+        <!--选择类别-->
+        <van-cell-group>
+          <van-cell title="发布类别" required custom-class="selectCategory" @click="chooseCategory" is-link>
+            <view slot="title">
+              <span class="van-cell-text"></span>
+            </view>
+            <picker @change="confirmCategory" range-key="categoryName" :value="indexCategory" :range="categoryList">
+              <view class="picker">
+                {{categoryList[indexCategory]['categoryName']}}
+              </view>
+            </picker>
+          </van-cell>
+          <van-cell title="费用" v-if="categoryAmount!=null" custom-class="" :value="categoryAmount">
+          </van-cell>
+        </van-cell-group>
+        <!--省市区-->
+        <div class="zj_container mt20">
+          <!-- <van-button size="normal" :disabled="subdisabled" round block type="primary" custom-class="zx_bgColor" @click="submit">提交</van-button> -->
+          <button formType="submit" :disabled="subdisabled" class="weui-btn zx_bgColor big_btn" type="primary" size="mini">提交</button>
         </div>
-        <div @click="chooseImage('pic2')" class="zx_img_container_pa">
-          <van-field label="图片2" readonly use-icon-slot @change="onChange2" :border="true" is-link/>
-          <view class="zx_img_container">
-            <img :src="pic2">
-          </view>
-        </div>
-      </van-cell-group>
-    </div>
-    <!-- <wxParse :content="article" /> -->
-    <form @submit="evaSubmit">
-      <van-cell-group>
-        <van-field required label="详细信息" :border="false" />
-      </van-cell-group>
-      <textarea :value="textarea" v-if="!showArea" class="zx_textarea" placeholder-class="zx_textarea_placeholder" name="evaContent" placeholder="最多2000字" id="" cols="30" rows="10" maxlength="2000" @blur="confirmTextarea" />
-      <!--省市区-->
-      <div class="zj_container">
-        <!-- <van-button size="normal" :disabled="subdisabled" round block type="primary" custom-class="zx_bgColor" @click="submit">提交</van-button> -->
-        <button formType="submit" :disabled="subdisabled" class="weui-btn zx_bgColor big_btn" type="primary" size="mini" @click="submitData">提交</button>
-      </div>
     </form>
     <van-popup :show="showArea" position="buttom" @close="onClose" custom-class="ajust_popup">
       <van-area v-if="showArea" :value="areaCode" :area-list="areaList" @confirm="confirmArea" />
     </van-popup>
-    <!-- <van-popup :show="showArea1" position="buttom" @close="onClose1" custom-class="ajust_popup">
-      <van-area v-if="showArea1" :columns-num="1" :value="areaCode1" :area-list="areaList1" @confirm="confirmArea1" />
-    </van-popup> -->
+    </div>
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
   </div>
 </template>
 
@@ -61,6 +80,8 @@
 import areaList from '@/utils/area.js'
 import wxParse from 'mpvue-wxparse'
 import jieyang from '@/utils/jieyang.js'
+import Toast from '@/../static/vant/toast/toast'
+import Dialog from '@/../static/vant/dialog/dialog'
 import {
   get,
   post
@@ -73,15 +94,15 @@ export default {
   data: {
     title: '',
     linkman: '',
-    linkPhone: '',
+    linkphone: '',
     showArea: false,
     areaList: areaList,
     areaText: '',
     areaCode: '445200', // 区
     article: '<div style="color:red">我是HTML代码</div>',
-    textarea: '',
-    pic1: null,
-    pic2: null,
+    information: '',
+    messageImage1: null,
+    messageImage2: null,
     // 省
     province: '440000',//（广东）
     // 市
@@ -91,7 +112,12 @@ export default {
     areaList1: null,
     areaText1: '',
     areaCode1: '445281003',
-    index: 0
+    index: 0,
+    // 类别
+    indexCategory: 0,
+    categoryId: null,
+    categoryAmount: null,
+    categoryList: []
   },
   watch: {
     areaCode(val) {
@@ -115,33 +141,22 @@ export default {
   },
   onLoad(options) {
     this.time = options.time
+    this.getCategory()
   },
   mounted(){
-    this.getCategory()
+    // picker初始化（分类）
+    this.categoryId = this.categoryList[this.indexCategory]['id']
+    this.categoryAmount = this.categoryList[this.indexCategory]['categoryFee']+'元'
   },
   methods: {
     async getCategory() {
       let self = this
-      const params = {
+      const data = await post('/api/category/query')
+      if(data.code == 0){
+        self.categoryList = data.data
+      }else{
+        Toast.fail(data.data.msg)
       }
-      const data = await get('/recruitment/user/selectUserInfoByUserId.do')
-      console.log(data)
-    },
-    async submitData() {
-      let self = this
-      const params = {
-        title: this.title,
-        linkman: this.linkman,
-        linkPhone: this.linkPhone,
-        province: this.province,
-        city: this.city,
-        district: this.areaCode,
-        town: this.areaCode1,
-        address: this.address,
-        information: this.textarea
-      }
-      const data = await post('/message/insertMessage.do',params)
-      console.log(data)
     },
     goTo: function (url) {
       console.log(url)
@@ -170,14 +185,106 @@ export default {
         success(res) {
           // tempFilePath可以作为img标签的src属性显示图片
           const tempFilePaths = res.tempFilePaths
-          self[zd] = tempFilePaths
+          self[zd] = tempFilePaths[0]
         }
       })
     },
-    evaSubmit: function (e) {
-      console.log(e)
-      this.textarea = e.mp.detail.value.evaContent
-      this.article = e.mp.detail.value.evaContent
+    validateParams(obj){
+      let self = this
+      let result = true
+      for(let i in obj){
+        if(obj.hasOwnProperty(i) && !obj[i]){
+          Toast.fail('必填项不能为空')
+          console.log('应该才一次')
+          result = false
+          break
+        }
+      }
+      return result
+    },
+    // 提交
+    async evaSubmit (event) {
+      console.log(event.mp.detail)
+      let self = this
+      self.information = event.mp.detail.value.information
+      self.address = event.mp.detail.value.address
+      const params = {
+        title: this.title,
+        linkman: this.linkman,
+        linkphone: this.linkphone,
+        province: this.province,
+        city: this.city,
+        district: this.areaCode,
+        town: this.areaCode1,
+        address: this.address,
+        information: this.information,
+        categoryId: this.categoryId
+      }
+      console.log('发布参数',params)
+      if(!self.validateParams(params)){return}
+      let messageImage1 = self.messageImage1
+      let messageImage2 = self.messageImage2
+      // this.goTo('/pages/buy/main')
+      if(!messageImage1 || !messageImage2){
+        Toast.fail('至少上传一张图片')
+        return
+      }
+      let temParams = {
+        messageImage1,
+        messageImage2
+      }
+      console.log(temParams)
+      for(let i in temParams){
+        if(temParams.hasOwnProperty(i)&&temParams[i]){
+          console.log(i,temParams[i],'上传ing...')
+          // 先上传图片
+          wx.uploadFile({
+              url: 'https://www.aiheart.top/recruitment/file/uploadPhoto.do',
+              filePath: temParams[i],
+              name: i,
+              header: {
+                "content-type": "multipart/form-data",
+                'accept': 'application/json',
+                'cookie': 'JSESSIONID=' + wx.getStorageSync('JSESSIONID')
+              },
+              formData: {
+                // 其他参数
+              },
+              success: function (res) {
+                let data = JSON.parse(res.data)
+                console.log(data);
+                if (data.status == 0) {
+                  Toast.success('上传成功')
+                } else if (data.status == 2) {
+                  // 未登录
+                  wx.redirectTo({
+                    url: '/pages/login/main'
+                  })
+                } else {
+                  Toast.fail(data.msg)
+                }
+              },
+              fail: function (res) {
+                console.log(res);
+              }
+            })
+          }
+      }
+      // 保存信息
+      Toast.loading({
+        mask: true,
+        message: '正在提交...'
+      })
+      const data = await post('/recruitment/message/insertMessage.do',params)
+      console.log(data)
+      if(data.status == 0){
+        Toast.loading({
+          mask: true,
+          message: '保存成功，跳转中...'
+        })
+      }else{
+        Toast.fail(data.msg)
+      }
     },
     confirmTextarea(e) {
       console.log(e)
@@ -216,6 +323,15 @@ export default {
       this.index = value.value
       this.areaCode1 = this.pickerAreaList1[this.index]['id']
     },
+    confirmCategory(event) {
+      // event.mp.detail 为当前输入的值
+      var value = event.mp.detail
+      console.log(value)
+      // this.index = value.value
+      this.indexCategory = value.value
+      this.categoryAmount = this.categoryList[this.indexCategory]['categoryFee']+'元'
+      this.categoryId = this.categoryList[this.indexCategory]['id']
+    },
     onClose() {
       this.showArea = false
     },
@@ -238,7 +354,7 @@ export default {
       // event.mp.detail 为当前输入的值
       var value = event.mp.detail
       console.log(value)
-      this.linkPhone = value
+      this.linkphone = value
     }
   }
 }

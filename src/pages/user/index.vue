@@ -46,6 +46,7 @@ export default {
   components: {
   },
   data: {
+    user:null,
     avatarUrl: null,
     showPasswordConfirm: false,
     hiddenPassword: '***',
@@ -55,6 +56,10 @@ export default {
     oldPasswordError: '',
     passwordError: '',
     passwordConfirmError: ''
+  },
+  onShow() {
+    this.user = wx.getStorageSync('user')
+    this.avatarUrl = this.user.photo
   },
   methods: {
     chooseImage() {
