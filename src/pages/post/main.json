@@ -4,6 +4,9 @@
     "van-field": "/static/vant/field/index",
     "van-notice-bar": "/static/vant/notice-bar/index",
     "van-dialog": "/static/vant/dialog/index",
-    "van-toast": "/static/vant/toast/index"
+    "van-toast": "/static/vant/toast/index",
+    "van-tabbar": "/static/vant/tabbar/index",
+    "van-tabbar-item": "/static/vant/tabbar-item/index",
+    "van-loading": "/static/vant/loading/index"
   }
 }

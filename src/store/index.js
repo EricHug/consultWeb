@@ -6,13 +6,15 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     //
-    code: '445200', // 编码
-    text: '揭阳',
+    district: '', 
+    town: '',
+    text: '',
     categoryList: null
   },
   mutations: {
-    alterZone(state,{code,text}) {
-      state.code = code
+    alterZone(state,{ district,town, text}) {
+      state.district = district
+      state.town = town
       state.text = text
     },
     initCategary(state,obj){

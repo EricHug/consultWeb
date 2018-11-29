@@ -11,6 +11,7 @@
     "pages/module/main",
     "pages/protocol/main",
     "pages/job/main",
+    "pages/navigator/main",
     "pages/buy/main"
   ],
   "window": {

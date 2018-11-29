@@ -3,6 +3,8 @@
     "van-search": "/static/vant/search/index",
     "van-tabbar": "/static/vant/tabbar/index",
     "van-tabbar-item": "/static/vant/tabbar-item/index",
-    "van-notice-bar": "/static/vant/notice-bar/index"
+    "van-notice-bar": "/static/vant/notice-bar/index",
+    "van-tab": "/static/vant/tab/index",
+    "van-tabs": "/static/vant/tabs/index"
   }
 }

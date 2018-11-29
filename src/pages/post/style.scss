@@ -39,6 +39,7 @@
     }
 }
 .zx_tip{
+    padding-bottom:50px;
     .jubao{
         padding: 20px;
         background: #fff;
@@ -78,4 +79,25 @@
 .calllink{
     color:#13227a;
     text-decoration: underline;
+}
+.ax_tabbar{
+    color:#666!important;
+}
+.loading-box{
+    display: flex;
+    width: 100%;
+    padding-top:20vh;
+    height:80vh;
+    justify-content: center;
+    align-content: center;
+}
+.loading{
+    margin:40px auto;
+}
+.image_box{
+    width:100%;
+    .image{
+        width:100%;
+        padding-top:24px;
+    }
 }

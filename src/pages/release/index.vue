@@ -4,12 +4,9 @@
       <form @submit="evaSubmit">
         <van-cell-group>
           <!-- <van-field :value="time+'个月'" required readonly label="发布时限" /> -->
-          <van-field :value="title" required clearable label="标题" placeholder="请输入标题" bind:click-icon="onClickIcon"
-            @change="onChange1" />
-          <van-field :value="linkman" required clearable label="联系人" placeholder="请输入联系人" bind:click-icon="onClickIcon"
-            @change="onChange2" />
-          <van-field :value="linkphone" required clearable label="联系电话" placeholder="请输入联系电话" bind:click-icon="onClickIcon"
-            @change="onChange3" />
+          <van-field required clearable label="标题" placeholder="请输入标题" bind:click-icon="onClickIcon" @change="onChange1" />
+          <van-field required clearable label="联系人" placeholder="请输入联系人" bind:click-icon="onClickIcon" @change="onChange2" />
+          <van-field required clearable label="联系电话" placeholder="请输入联系电话" bind:click-icon="onClickIcon" @change="onChange3" />
           <van-cell :value="areaText" required @click="chooseArea" is-link>
             <view slot="title">
               <span class="van-cell-text">联系地址</span>
@@ -26,16 +23,15 @@
               </view>
             </picker>
           </van-cell>
-          <van-field :value="address" v-if="!showArea" custom-class="ajust_textarea_1" clearable label=" " type="textarea"
-            placeholder="请输入详细地址" bind:click-icon="onClickIcon" autosize maxlength="2000" :border="true" name="address" />
+          <van-field :value="address" v-if="!showArea" custom-class="ajust_textarea_1" clearable label=" " type="textarea" placeholder="请输入详细地址" bind:click-icon="onClickIcon" autosize maxlength="2000" :border="true" name="address" />
           <div @click="chooseImage('messageImage1')" class="zx_img_container_pa">
-            <van-field label="图片1" readonly use-icon-slot @change="onChange1" :border="true" required is-link />
+            <van-field label="图片1" readonly use-icon-slot :border="true" required is-link />
             <view class="zx_img_container">
               <img :src="messageImage1">
             </view>
           </div>
           <div @click="chooseImage('messageImage2')" class="zx_img_container_pa">
-            <van-field label="图片2" readonly use-icon-slot @change="onChange2" :border="true" is-link />
+            <van-field label="图片2" readonly use-icon-slot :border="true" is-link />
             <view class="zx_img_container">
               <img :src="messageImage2">
             </view>
@@ -44,8 +40,7 @@
         <van-cell-group>
           <van-field required label="详细信息" :border="false" disabled/>
         </van-cell-group>
-        <textarea :value="information" v-if="!showArea" class="zx_textarea" placeholder-class="zx_textarea_placeholder"
-          name="information" placeholder="最多2000字" id="" cols="30" rows="10" maxlength="2000" @blur="confirmTextarea" />
+        <textarea :value="information" v-if="!showArea" class="zx_textarea" placeholder-class="zx_textarea_placeholder" name="information" placeholder="最多2000字" id="" cols="30" rows="10" maxlength="2000" @blur="confirmTextarea" />
         <!--选择类别-->
         <van-cell-group>
           <van-cell title="发布类别" required custom-class="selectCategory" @click="chooseCategory" is-link>
@@ -66,10 +61,10 @@
           <!-- <van-button size="normal" :disabled="subdisabled" round block type="primary" custom-class="zx_bgColor" @click="submit">提交</van-button> -->
           <button formType="submit" :disabled="subdisabled" class="weui-btn zx_bgColor big_btn" type="primary" size="mini">提交</button>
         </div>
-    </form>
-    <van-popup :show="showArea" position="buttom" @close="onClose" custom-class="ajust_popup">
-      <van-area v-if="showArea" :value="areaCode" :area-list="areaList" @confirm="confirmArea" />
-    </van-popup>
+      </form>
+      <van-popup :show="showArea" position="buttom" @close="onClose" custom-class="ajust_popup">
+        <van-area v-if="showArea" :value="areaCode" :area-list="areaList" @confirm="confirmArea" />
+      </van-popup>
     </div>
     <van-toast id="van-toast" />
     <van-dialog id="van-dialog" />
@@ -86,6 +81,7 @@ import {
   get,
   post
 } from "../../utils"
+import { setTimeout } from 'timers';
 // Use Vuex
 export default {
   components: {
@@ -143,18 +139,31 @@ export default {
     this.time = options.time
     this.getCategory()
   },
-  mounted(){
-    // picker初始化（分类）
-    this.categoryId = this.categoryList[this.indexCategory]['id']
-    this.categoryAmount = this.categoryList[this.indexCategory]['categoryFee']+'元'
+  mounted() {
+    let self  = this
+          Dialog.confirm({
+            title: '提示',
+            message: '等待管理员审核'
+          }).then(() => {
+            // on confirm
+            self.jumpTo('/pages/center/main')
+          }).catch(() => {
+            // on cancel
+            self.jumpTo('/pages/center/main')
+          })
   },
   methods: {
     async getCategory() {
       let self = this
       const data = await post('/api/category/query')
-      if(data.code == 0){
+      if (data.code == 0) {
         self.categoryList = data.data
-      }else{
+        if (!self.categoryId) {
+          // picker初始化（分类）
+          self.categoryId = self.categoryList[self.indexCategory]['id']
+          self.categoryAmount = self.categoryList[self.indexCategory]['categoryFee'] + '元'
+        }
+      } else {
         Toast.fail(data.data.msg)
       }
     },
@@ -189,11 +198,11 @@ export default {
         }
       })
     },
-    validateParams(obj){
+    validateParams(obj) {
       let self = this
       let result = true
-      for(let i in obj){
-        if(obj.hasOwnProperty(i) && !obj[i]){
+      for (let i in obj) {
+        if (obj.hasOwnProperty(i) && !obj[i]) {
           Toast.fail('必填项不能为空')
           console.log('应该才一次')
           result = false
@@ -203,7 +212,7 @@ export default {
       return result
     },
     // 提交
-    async evaSubmit (event) {
+    async evaSubmit(event) {
       console.log(event.mp.detail)
       let self = this
       self.information = event.mp.detail.value.information
@@ -220,12 +229,12 @@ export default {
         information: this.information,
         categoryId: this.categoryId
       }
-      console.log('发布参数',params)
-      if(!self.validateParams(params)){return}
+      console.log('发布参数', params)
+      if (!self.validateParams(params)) { return }
       let messageImage1 = self.messageImage1
       let messageImage2 = self.messageImage2
       // this.goTo('/pages/buy/main')
-      if(!messageImage1 || !messageImage2){
+      if (!messageImage1 && !messageImage2) {
         Toast.fail('至少上传一张图片')
         return
       }
@@ -234,55 +243,68 @@ export default {
         messageImage2
       }
       console.log(temParams)
-      for(let i in temParams){
-        if(temParams.hasOwnProperty(i)&&temParams[i]){
-          console.log(i,temParams[i],'上传ing...')
+      for (let i in temParams) {
+        if (temParams.hasOwnProperty(i) && temParams[i]) {
+          console.log(i, temParams[i], '上传ing...')
           // 先上传图片
           wx.uploadFile({
-              url: 'https://www.aiheart.top/recruitment/file/uploadPhoto.do',
-              filePath: temParams[i],
-              name: i,
-              header: {
-                "content-type": "multipart/form-data",
-                'accept': 'application/json',
-                'cookie': 'JSESSIONID=' + wx.getStorageSync('JSESSIONID')
-              },
-              formData: {
-                // 其他参数
-              },
-              success: function (res) {
-                let data = JSON.parse(res.data)
-                console.log(data);
-                if (data.status == 0) {
-                  Toast.success('上传成功')
-                } else if (data.status == 2) {
-                  // 未登录
-                  wx.redirectTo({
-                    url: '/pages/login/main'
-                  })
-                } else {
-                  Toast.fail(data.msg)
-                }
-              },
-              fail: function (res) {
-                console.log(res);
+            url: 'https://www.aiheart.top/recruitment/file/uploadPhoto.do',
+            filePath: temParams[i],
+            name: i,
+            header: {
+              "content-type": "multipart/form-data",
+              'accept': 'application/json',
+              'cookie': 'JSESSIONID=' + wx.getStorageSync('JSESSIONID')
+            },
+            formData: {
+              // 其他参数
+            },
+            success: function (res) {
+              let data = JSON.parse(res.data)
+              console.log(data);
+              if (data.status == 0) {
+                // Toast.success('上传成功')
+              } else if (data.status == 2) {
+                // 未登录
+                wx.redirectTo({
+                  url: '/pages/login/main'
+                })
+              } else {
+                Toast.fail(data.msg)
               }
-            })
-          }
+            },
+            fail: function (res) {
+              console.log(res);
+            }
+          })
+        }
       }
       // 保存信息
       Toast.loading({
         mask: true,
         message: '正在提交...'
       })
-      const data = await post('/recruitment/message/insertMessage.do',params)
+      const data = await post('/recruitment/message/insertMessage.do', params)
       console.log(data)
-      if(data.status == 0){
+      if (data.status == 0) {
         Toast.loading({
           mask: true,
-          message: '保存成功，跳转中...'
+          message: '保存中...'
         })
-      }else{
+        // 
+        setTimeout(() => {
+          Dialog.confirm({
+            title: '提示',
+            message: '等待管理员审核'
+          }).then(() => {
+            // on confirm
+            self.jumpTo('/pages/center/main')
+          }).catch(() => {
+            // on cancel
+            self.jumpTo('/pages/center/main')
+          })
+        }, 800)
+      } else {
         Toast.fail(data.msg)
       }
     },
@@ -329,7 +351,7 @@ export default {
       console.log(value)
       // this.index = value.value
       this.indexCategory = value.value
-      this.categoryAmount = this.categoryList[this.indexCategory]['categoryFee']+'元'
+      this.categoryAmount = this.categoryList[this.indexCategory]['categoryFee'] + '元'
       this.categoryId = this.categoryList[this.indexCategory]['id']
     },
     onClose() {

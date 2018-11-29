@@ -20,7 +20,8 @@ export default {
       mainActiveIndex: 0,
       activeId: 0,
       items: [],
-      code: null, // 默认
+      district: null,
+      town: null,
       text: ''
     }
   },
@@ -34,9 +35,11 @@ export default {
       })
     },
     confirmZone() {
-      let code = this.code
+      let district = this.district
+      let town = this.town
       let text = this.text
-      this.$store.commit('alterZone', { code, text })
+      this.$store.commit('alterZone', { district,town, text })
+      console.log('选择：',district,town, text)
       wx.navigateBack({
         delta: 1
       })
@@ -75,8 +78,8 @@ export default {
       console.log(value)
       this.activeId = value.id
       //
-      this.code = this.activeId
-      this.text = value.text
+      this.town = this.activeId
+      this.text += value.text
     },
     onClickNav(event) {
       // event.mp.detail 为当前输入的值
@@ -85,8 +88,9 @@ export default {
       this.mainActiveIndex = value.index || 0
       //
       var keys = Object.keys(jieyang.district)
-      this.code = keys[this.mainActiveIndex]
-      this.text = jieyang.district[this.code]
+      this.district = keys[this.mainActiveIndex]
+      this.text = jieyang.district[this.district]
+      this.town = ''
       this.activeId = null
     }
   },
@@ -95,7 +99,8 @@ export default {
     console.log(this.items)
   },
   mounted() {
-    this.code = this.$store.state.code
+    this.district = this.$store.state.district
+    this.town = this.$store.state.town
     this.text = this.$store.state.text
   }
 }

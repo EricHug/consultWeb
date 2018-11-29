@@ -1,3 +1,4 @@
+import jieyang from './jieyang'
 function formatNumber(n) {
   const str = n.toString()
   return str[1] ? str : `0${str}`
@@ -79,6 +80,35 @@ export function parseStrObjByFor(strDes, delimiter) {
     }
   }
   return obj;
+}
+
+/**
+ * @description code转名称
+ * @param province {string} 省编码
+ * @param city {string} 市编码
+ * @param district {string} 区编码
+ * @param town {string} 镇编码
+ * @returns {string} 名称
+ */
+export function transCodeToName(province, city, district, town,delimiter) {
+  let arr = []
+  if(province && province=='440000'){
+    // 暂时只做广东省
+    arr.push('广东省')
+  }
+  if(city&&city=="445200"){
+    // 暂时只做揭阳市
+    arr.push('揭阳')
+  }
+  if(district&&district!='445200'){
+    console.log(district,jieyang.district[district])
+    arr.push(jieyang.district[district])
+  }
+  if(district&&town){
+    console.log(town,jieyang.town[district][town])
+    arr.push(jieyang.town[district][town])
+  }
+  return arr.join(delimiter?delimiter:'')
 }
 
 /**

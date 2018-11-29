@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "导航",
+  "usingComponents": {
+    "van-tree-select": "/static/vant/tree-select/index",
+    "van-button": "/static/vant/button/index"
+  }
+}
