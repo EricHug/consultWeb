@@ -1,0 +1,36 @@
+.container{
+    background-color:#f8f8f8;
+    height: 100vh;
+}
+.footer{
+    text-align: right;
+}
+.panel_header{
+    display:flex;
+    flex-direction: row;
+    background-color: #fff;
+    padding:20px 32px;
+    box-sizing:border-box;
+    line-height:66px;
+    position:relative;
+    background-color:#fff;
+    color:#333;
+    font-size:28px;
+    .panel_left{
+        width:80%;
+        text-align: left;
+    }
+    .panel_right{
+        text-align: right;
+        flex:1;
+    }
+    .panel_desc{
+        font-size:24px;
+        line-height:1.2;
+        color:#666;
+    }
+}
+.panel_state{
+    width:100%;
+    color:#13227a;
+}

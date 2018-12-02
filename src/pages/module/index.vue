@@ -5,7 +5,8 @@
         <span style="color:#ddd;">|</span>
       </div>
       <div class="zx_search">
-        <van-search custom-class="zx_search_box" :value="keyword" placeholder="请输入搜索关键词" use-action-slot  @change="onChange0">
+        <van-search custom-class="zx_search_box" :value="keyword" placeholder="请输入搜索关键词" use-action-slot @change="onChange0"
+          @search="onSearch">
           <view slot="action" @tap="onSearch">搜索</view>
         </van-search>
       </div>
@@ -24,8 +25,10 @@
       <van-tabs :active="active" @change="onChange" v-if="index == 0">
         <van-tab title="个人招聘">
           <div class="zx_content_item" v-if="postList1.length>0">
-            <div v-for="(item,index) in postList1" @click="goDetail(item)">
-              <card :title="item.title" :createTime="item.createTime" :province="item.province" :city="item.city" :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId" :key="item.msgId"></card>
+            <div v-for="(item,index) in postList1" :key="item.msgId" @click="goDetail(item)">
+              <card :title="item.title" :createTime="item.createTime" :province="item.province" :city="item.city"
+                :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId"
+                :key="item.msgId"></card>
             </div>
           </div>
           <div class="tip" v-else>
@@ -35,8 +38,10 @@
         </van-tab>
         <van-tab title="企业招聘">
           <div class="zx_content_item" v-if="postList2.length>0">
-            <div v-for="(item,index) in postList2" @click="goDetail(item)">
-              <card :title="item.title" :createTime="item.createTime" :province="item.province" :city="item.city" :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId" :key="item.msgId"></card>
+            <div v-for="(item,index) in postList2" :key="item.msgId" @click="goDetail(item)">
+              <card :title="item.title" :createTime="item.createTime" :province="item.province" :city="item.city"
+                :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId"
+                :key="item.msgId"></card>
             </div>
           </div>
           <div class="tip" v-else>
@@ -49,8 +54,10 @@
       <van-tabs :active="active" @change="onChange" v-if="index == 1">
         <van-tab title="车找货">
           <div class="zx_content_item" v-if="postList3.length>0">
-            <div v-for="(item,index) in postList3" @click="goDetail(item)">
-              <card :title="item.title" :createTime="item.createTime" :province="item.province" :city="item.city" :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId" :key="item.msgId"></card>
+            <div v-for="(item,index) in postList3" :key="item.msgId" @click="goDetail(item)">
+              <card :title="item.title" :createTime="item.createTime" :province="item.province" :city="item.city"
+                :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId"
+                :key="item.msgId"></card>
             </div>
           </div>
           <div class="tip" v-else>
@@ -60,8 +67,10 @@
         </van-tab>
         <van-tab title="货找车">
           <div class="zx_content_item" v-if="postList4.length>0">
-            <div v-for="(item,index) in postList4" @click="goDetail(item)">
-              <card :title="item.title" :createTime="item.createTime" :province="item.province" :city="item.city" :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId" :key="item.msgId"></card>
+            <div v-for="(item,index) in postList4" :key="item.msgId" @click="goDetail(item)">
+              <card :title="item.title" :createTime="item.createTime" :province="item.province" :city="item.city"
+                :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId"
+                :key="item.msgId"></card>
             </div>
           </div>
           <div class="tip" v-else>
@@ -72,8 +81,10 @@
       </van-tabs>
       <template v-if="index != 0 && index !=1">
         <div class="zx_content_item" v-if="postList0.length>0">
-          <div v-for="(item,index) in postList0" @click="goDetail(item)">
-            <card :title="item.title" :createTime="item.createTime" :province="item.province" :city="item.city" :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId" :key="item.msgId"></card>
+          <div v-for="(item,index) in postList0" :key="item.msgId" @click="goDetail(item)">
+            <card :title="item.title" :createTime="item.createTime" :province="item.province" :city="item.city"
+              :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId"
+              :key="item.msgId"></card>
           </div>
         </div>
         <div class="tip" v-else>
@@ -86,157 +97,171 @@
 </template>
 
 <script>
-import card from '@/components/card'
-import {
-  mapState
-} from 'vuex'
-import {
-  get,
-  post
-} from "../../utils"
-import configuration from '@/utils/configuration.json'
+  import card from '@/components/card'
+  import {
+    mapState
+  } from 'vuex'
+  import {
+    get,
+    post
+  } from "../../utils"
+  import configuration from '@/utils/configuration.json'
 
 
-export default {
-  data() {
-    return {
-      txt: '',
-      keyword: '',
-      navList: configuration.navList,
-      index: null,
-      active: 0, // tab index
-      postList0: [],
-      postList1: [],
-      postList2: [],
-      postList3: [],
-      postList4: [],
-    }
-  },
-  components: {
-    card
-  },
-  computed: {
-    ...mapState(['district', 'town', 'text', 'categoryList']),
-    categoryId() {
-      let self = this
-      let id = null
-      let index = self.index
-      if (self.index == 0) {
-        if (self.active == 0) {
-          id = 1
-        } else {
-          id = 2
-        }
-      } else if (self.index == 1) {
-        if (self.active == 0) {
-          id = 3
-        } else {
-          id = 4
-        }
-      } else {
-        id = parseInt(index) + 2
+  export default {
+    data() {
+      return {
+        txt: '',
+        keyword: '',
+        navList: configuration.navList,
+        index: null,
+        active: 0, // tab index
+        postList0: [],
+        postList1: [],
+        postList2: [],
+        postList3: [],
+        postList4: [],
       }
-      return id
-    }
-  },
-  mounted() {
-    console.log(this.navList.length)
-    let id = this.$root.$mp.query.id
-    let keyword = this.$root.$mp.query.keyword
-    let active = this.$root.$mp.query.active
-    let txt = this.navList[id]['txt']
-    wx.setNavigationBarTitle({
-      title: txt
-    })
-    // this.index = id
-    this.keyword = keyword
-    this.active = active ? active : 0
-    this.correspondPost()
-  },
-  onLoad(options){
-    // 用v-if判断的参数得写在onLoad
-    this.index = options.id
-  },
-  methods: {
-    reverse1(array) {
-      var newArr = [];
-      for (var i = array.length - 1; i >= 0; i--) {
-        newArr[newArr.length] = array[i];
-      }
-      return newArr;
     },
-    onSearch() {
+    components: {
+      card
+    },
+    computed: {
+      ...mapState(['district', 'town', 'text', 'categoryList']),
+      categoryId() {
+        let self = this
+        let id = null
+        let index = self.index
+        if (self.index == 0) {
+          if (self.active == 0) {
+            id = 1
+          } else {
+            id = 2
+          }
+        } else if (self.index == 1) {
+          if (self.active == 0) {
+            id = 3
+          } else {
+            id = 4
+          }
+        } else {
+          id = parseInt(index) + 2
+        }
+        return id
+      }
+    },
+    onShow() {
       this.correspondPost()
     },
-    async getPostList(target) {
-      let self = this
-      const data = await post('/recruitment/message/selectMessageByKeyword.do', {
-        categoryId: self.categoryId,
-        keyword: self.keyword,
-        district: self.district,
-        town: self.town
+    onPullDownRefresh(){
+      this.correspondPost()
+    },
+    mounted() {
+      console.log(this.navList.length)
+      let id = this.$root.$mp.query.id
+      let keyword = this.$root.$mp.query.keyword
+      console.log('keyword', keyword)
+      let active = this.$root.$mp.query.active
+      let txt = this.navList[id]['txt']
+      wx.setNavigationBarTitle({
+        title: txt
       })
-      console.log('target','postList'+target)
-      if (data.status == 0) {
-        self['postList'+target] = self.reverse1(data.data.list)
-      } else {
-        Toast.fail(data.msg)
-      }
+      // this.index = id
+      this.keyword = keyword ? keyword : ''
+      this.active = active ? active : 0
+      this.correspondPost()
     },
-    onChange0(event) {
-      var value = event.mp.detail
-      console.log(value)
-      this.keyword = value
+    onLoad(options) {
+      // 用v-if判断的参数得写在onLoad
+      this.index = options.id
     },
-    onChange(event) {
-      // wx.showToast({
-      //   title: `切换到标签 ${event.mp.detail.index + 1}`,
-      //   icon: 'none'
-      // });
-      let self = this
-      self.active = event.mp.detail.index
-      self.correspondPost()
+    onUnload() {
+      // 生命周期函数--监听页面卸载
+      console.log("module onUnload");
     },
-    correspondPost() {
-      let self = this
-      let index = self.index
-      let active = self.active
-      if (index == 0) {
-        if (active == 0) {
-          // 个人
-          self.getPostList(1)
-        } else {
-          // 企业
-          self.getPostList(2)
+    methods: {
+      reverse1(array) {
+        var newArr = [];
+        for (var i = array.length - 1; i >= 0; i--) {
+          newArr[newArr.length] = array[i];
         }
-      } else if (index == 1) {
-        if (active == 0) {
-          // 车找货
-          self.getPostList(3)
+        return newArr;
+      },
+      onSearch() {
+        this.correspondPost()
+      },
+      async getPostList(target) {
+        let self = this
+        const data = await post('/recruitment/message/selectMessageByKeyword.do', {
+          categoryId: self.categoryId,
+          keyword: self.keyword,
+          district: self.district,
+          town: self.town
+        })
+        console.log('target', 'postList' + target)
+        if (data.status == 0) {
+          self['postList' + target] = self.reverse1(data.data.list)
         } else {
-          // 货找车
-          self.getPostList(4)
+          Toast.fail(data.msg)
         }
-      } else {
-        self.getPostList(0)
+        // 停止下拉动作
+        wx.stopPullDownRefresh()
+      },
+      onChange0(event) {
+        var value = event.mp.detail
+        console.log(value)
+        this.keyword = value
+      },
+      onChange(event) {
+        // wx.showToast({
+        //   title: `切换到标签 ${event.mp.detail.index + 1}`,
+        //   icon: 'none'
+        // });
+        let self = this
+        self.active = event.mp.detail.index
+        self.correspondPost()
+      },
+      correspondPost() {
+        let self = this
+        let index = self.index
+        let active = self.active
+        if (index == 0) {
+          if (active == 0) {
+            // 个人
+            self.getPostList(1)
+          } else {
+            // 企业
+            self.getPostList(2)
+          }
+        } else if (index == 1) {
+          if (active == 0) {
+            // 车找货
+            self.getPostList(3)
+          } else {
+            // 货找车
+            self.getPostList(4)
+          }
+        } else {
+          self.getPostList(0)
+        }
+      },
+      goTo: function (url) {
+        console.log(url)
+        wx.navigateTo({
+          url: url
+        })
+      },
+      goDetail(obj) {
+        let self = this
+        wx.setStorageSync('detail', obj)
+        self.goTo('/pages/post/main')
       }
-    },
-    goTo: function (url) {
-      console.log(url)
-      wx.navigateTo({
-        url: url
-      })
-    },
-    goDetail(obj) {
-      let self = this
-      wx.setStorageSync('detail', obj)
-      self.goTo('/pages/post/main')
     }
   }
-}
 
 </script>
 
 <style lang="scss">
-@import "./style.scss";
+  @import "./style.scss";
+
 </style>

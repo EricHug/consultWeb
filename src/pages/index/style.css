@@ -1,0 +1,106 @@
+.zx_header {
+  width: 686px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: #fff;
+}
+
+.zx_header .zx_city {
+  width: 126px;
+  text-align: center;
+  line-height: 88px;
+  font-size: 28px;
+}
+
+.zx_header .zx_search {
+  width: 560px;
+  border-radius: 44px;
+  overflow: hidden;
+}
+
+.zx_content {
+  padding: 0 32px;
+}
+
+.zx_content .zx_content_item > p {
+  color: #a3a3a3;
+  font-size: 24px;
+  padding: 20px;
+}
+
+.zx_search_box {
+  background: #fff !important;
+  padding-left: 0 !important;
+  justify-content: space-between;
+}
+
+.zx_search_box .van-search__field {
+  border-bottom: 1px solid #ccc;
+}
+
+.zx_search_box ._view {
+  width: 100rpx;
+  border: 1px solid #13227a;
+  text-align: center;
+  background: #13227a;
+  color: #fff;
+}
+
+.zx_zone {
+  font-size: 28px;
+  color: #333;
+  padding: 0 46px 16px;
+}
+
+.zx_member {
+  font-size: 28px;
+  color: red;
+  padding: 0 44px;
+}
+
+.zx_nav {
+  padding: 32px 32px 0;
+}
+
+.zx_nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  border-bottom: 1px solid #dedede;
+  padding-bottom: 16rpx;
+}
+
+.zx_nav ul li {
+  width: 170px;
+  height: 126px;
+  text-align: center;
+}
+
+.zx_nav ul li img {
+  width: 48px;
+  height: 48px;
+}
+
+.zx_nav ul li p {
+  font-size: 28px;
+  color: #333;
+}
+
+.zx_notice {
+  margin-bottom: 10px;
+  padding: 0 44px;
+}
+
+.zx_n_notice {
+  height: 50px !important;
+  line-height: 50px !important;
+  padding: 0 10px !important;
+}
+
+.zx_m_notice {
+  height: 50px !important;
+  line-height: 50px !important;
+  padding: 0 10px !important;
+}

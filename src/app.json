@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/main",
+    "pages/releaseList/main",
     "pages/release/main",
     "pages/selectZone/main",
     "pages/center/main",
@@ -11,13 +12,14 @@
     "pages/module/main",
     "pages/protocol/main",
     "pages/job/main",
+    "pages/trunk/main",
     "pages/navigator/main",
     "pages/buy/main"
   ],
   "window": {
-    "backgroundTextStyle": "light",
+    "backgroundTextStyle": "#13227a",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "百事通商务信息咨询服务部",
+    "navigationBarTitleText": "有事通商务信息咨询服务部",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {

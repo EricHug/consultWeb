@@ -7,7 +7,7 @@
     </van-cell-group>
     <div class="zx_login_act">
       <van-button size="normal" round block type="primary" custom-class="zx_bgColor" @click="login">登录</van-button>
-      <van-button size="normal" round block type="primary" custom-class="mgt20" @click="jumpTo('/pages/register/main')">我要注册</van-button>
+      <van-button size="normal" round block type="primary" custom-class="mgt20" @click="jumpTo('/pages/register/main?phone='+phone)">我要注册</van-button>
       <van-button size="normal" plain round block type="primary" custom-class="mgt20" @click="jumpTo('/pages/index/main')">返回首页</van-button>
       <!-- <van-row custom-class="mgt10">
         <van-col span="12">
@@ -41,11 +41,13 @@
       passwordError: '',
     },
     mounted() {
+      let phone = this.$root.$mp.query.phone
+      this.phone = phone ? phone : ''
       this.resetZd()
     },
     methods: {
       resetZd() {
-        this.phone = ''
+        // this.phone = ''
         this.phoneError = ''
         this.password = ''
         this.passwordError = ''

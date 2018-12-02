@@ -76,16 +76,34 @@
     }
 }
 .zx_notice{
-    margin-bottom:10px;
-    padding:0 44px;
-}
-.zx_n_notice{
     height:50px!important;
     line-height:50px!important;
     padding:0 10px!important;
 }
-.zx_m_notice{
-    height:50px!important;
-    line-height:50px!important;
-    padding:0 10px!important;
+.job_content{
+    padding:40px 0 12px;
+    border-bottom: 1px solid #ccc;
+    h1{
+        font-size: 32px;
+        span{
+            padding-bottom:6px;
+            margin:20px 0;
+            border-bottom:4px solid #13227a;
+        }
+    }
+    .jc_item{
+        width:100%;
+        padding:20px 0;
+        font-size: 30px;
+        color:#333;
+        span{
+            width: 25%;
+            float: left;
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            line-height: 66px;
+        }
+    }
 }

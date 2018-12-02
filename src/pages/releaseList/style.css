@@ -1,0 +1,13 @@
+.container {
+  background-color: #f8f8f8;
+}
+
+.sz_header {
+  font-size: 30px;
+  padding: 15px 30px;
+  box-sizing: border-box;
+}
+
+.sz_header span {
+  color: #a3a3a3;
+}

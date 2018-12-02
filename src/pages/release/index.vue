@@ -4,9 +4,9 @@
       <form @submit="evaSubmit">
         <van-cell-group>
           <!-- <van-field :value="time+'个月'" required readonly label="发布时限" /> -->
-          <van-field required clearable label="标题" placeholder="请输入标题" bind:click-icon="onClickIcon" @change="onChange1" />
-          <van-field required clearable label="联系人" placeholder="请输入联系人" bind:click-icon="onClickIcon" @change="onChange2" />
-          <van-field required clearable label="联系电话" placeholder="请输入联系电话" bind:click-icon="onClickIcon" @change="onChange3" />
+          <van-field required :value="title" clearable label="标题" placeholder="请输入标题" bind:click-icon="onClickIcon" @change="onChange1" />
+          <van-field required :value="linkman" clearable label="联系人" placeholder="请输入联系人" bind:click-icon="onClickIcon" @change="onChange2" />
+          <van-field required :value="linkphone" clearable label="联系电话" placeholder="请输入联系电话" bind:click-icon="onClickIcon" @change="onChange3" />
           <van-cell :value="areaText" required @click="chooseArea" is-link>
             <view slot="title">
               <span class="van-cell-text">联系地址</span>
@@ -23,7 +23,7 @@
               </view>
             </picker>
           </van-cell>
-          <van-field :value="address" v-if="!showArea" custom-class="ajust_textarea_1" clearable label=" " type="textarea" placeholder="请输入详细地址" bind:click-icon="onClickIcon" autosize maxlength="2000" :border="true" name="address" />
+          <van-field :value="address" v-if="!showArea" custom-class="ajust_textarea_1" clearable label=" " type="textarea" placeholder="请输入详细地址" bind:click-icon="onClickIcon" autosize maxlength="2000" :border="true" name="address" @change="onChange4" />
           <div @click="chooseImage('messageImage1')" class="zx_img_container_pa">
             <van-field label="图片1" readonly use-icon-slot :border="true" required is-link />
             <view class="zx_img_container">
@@ -38,11 +38,11 @@
           </div>
         </van-cell-group>
         <van-cell-group>
-          <van-field required label="详细信息" :border="false" disabled/>
+          <van-field required label="详细信息" :border="false" disabled />
         </van-cell-group>
         <textarea :value="information" v-if="!showArea" class="zx_textarea" placeholder-class="zx_textarea_placeholder" name="information" placeholder="最多2000字" id="" cols="30" rows="10" maxlength="2000" @blur="confirmTextarea" />
         <!--选择类别-->
-        <van-cell-group>
+        <van-cell-group v-if="release&&release['state']=='0'">
           <van-cell title="发布类别" required custom-class="selectCategory" @click="chooseCategory" is-link>
             <view slot="title">
               <span class="van-cell-text"></span>
@@ -96,9 +96,10 @@ export default {
     areaText: '',
     areaCode: '445200', // 区
     article: '<div style="color:red">我是HTML代码</div>',
-    information: '',
     messageImage1: null,
     messageImage2: null,
+    address: '',
+    information: '',
     // 省
     province: '440000',//（广东）
     // 市
@@ -113,7 +114,10 @@ export default {
     indexCategory: 0,
     categoryId: null,
     categoryAmount: null,
-    categoryList: []
+    categoryList: [],
+    // 用户发布的信息
+    release: {},
+    stateName: null
   },
   watch: {
     areaCode(val) {
@@ -140,19 +144,50 @@ export default {
     this.getCategory()
   },
   mounted() {
-    let self  = this
-          Dialog.confirm({
-            title: '提示',
-            message: '等待管理员审核'
-          }).then(() => {
-            // on confirm
-            self.jumpTo('/pages/center/main')
-          }).catch(() => {
-            // on cancel
-            self.jumpTo('/pages/center/main')
-          })
+    let self = this
+    self.getUserRelease()
   },
   methods: {
+    initData() {
+      let self = this
+      console.log(11111111111)
+      // 编辑初始赋值
+      let { title, linkman, linkphone, information, address, district, town, messageImage1, messageImage2 } = self.release
+      self.title = title
+      self.linkman = linkman
+      self.linkphone = linkphone
+      self.information = information
+      self.address = address
+      self.district = district
+      self.town = town
+      self.messageImage1 = messageImage1
+      self.messageImage2 = messageImage2
+    },
+    async getUserRelease() {
+      let self = this
+      const data = await get('/recruitment/message/selectMessageByUserId.do')
+      if (data.status == 0) {
+        self.release = data.data
+        //
+        self.initData()
+        let state = data.data['state']
+        if (state == 0) {
+          self.stateName = '未发布'
+        } else if (state == 1) {
+          self.stateName = '待审核'
+        } else if (state == 2) {
+          self.stateName = '已发布'
+        } else {
+          self.stateName = ''
+        }
+        let activeTime = self.release['activeTime']
+        if (activeTime) {
+          self.leftDays = '剩余' + self.relativeDays(activeTime, (new Date()).getTime()) + '天'
+        }
+      } else {
+        Toast.fail(data.msg)
+      }
+    },
     async getCategory() {
       let self = this
       const data = await post('/api/category/query')
@@ -284,33 +319,35 @@ export default {
         mask: true,
         message: '正在提交...'
       })
-      const data = await post('/recruitment/message/insertMessage.do', params)
+      let url = ''
+      if (self.release.state == 2) {
+        url = '/recruitment/message/updateMessageByPrimaryKeySelective.do'
+        params['msgId'] = self.release['msgId']
+      } else {
+        url = '/recruitment/message/insertMessage.do'
+      }
+      Toast.loading({
+        mask: true,
+        // message: '保存中...'
+      })
+      const data = await post(url, params)
       console.log(data)
       if (data.status == 0) {
+        //
         Toast.loading({
           mask: true,
-          message: '保存中...'
+          message: '更新成功,跳转中...'
         })
-        // 
         setTimeout(() => {
-          Dialog.confirm({
-            title: '提示',
-            message: '等待管理员审核'
-          }).then(() => {
-            // on confirm
-            self.jumpTo('/pages/center/main')
-          }).catch(() => {
-            // on cancel
-            self.jumpTo('/pages/center/main')
-          })
-        }, 800)
+          self.jumpTo('/pages/center/main')
+        }, 500)
       } else {
         Toast.fail(data.msg)
       }
     },
-    confirmTextarea(e) {
-      console.log(e)
-      // this.textareaTemp = e.mp.detail.value
+    confirmTextarea(event) {
+      console.log(event)
+      this.information = event.mp.detail.value
     },
     chooseArea() {
       this.showArea = true
@@ -377,7 +414,13 @@ export default {
       var value = event.mp.detail
       console.log(value)
       this.linkphone = value
-    }
+    },
+    onChange4(event) {
+      // event.mp.detail 为当前输入的值
+      var value = event.mp.detail
+      console.log(value)
+      this.address = value
+    },
   }
 }
 

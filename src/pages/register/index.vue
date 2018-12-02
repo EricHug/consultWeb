@@ -7,11 +7,11 @@
         :border="false" @change="onChange2" required />
     </van-cell-group>
     <div class="xy_box">
-      <van-checkbox :value="checked" custom-class="tiaokuan" @change="onChange">注册代表同意</van-checkbox><a href="/pages/protocol/main" class="bst_xy">百事通商务信息咨询用户服务协议</a>
+      <van-checkbox :value="checked" custom-class="tiaokuan" @change="onChange">注册代表同意</van-checkbox><a href="/pages/protocol/main" class="bst_xy">有事通商务信息咨询用户服务协议</a>
     </div>
     <div class="login_button">
       <van-button size="normal" round block type="primary" @click="register">注册</van-button>
-      <van-button size="normal" round block type="primary" custom-class="zx_bgColor mgt20" @click="jumpTo('/pages/login/main')">已有账号，直接登录</van-button>
+      <van-button size="normal" round block type="primary" custom-class="zx_bgColor mgt20" @click="jumpTo('/pages/login/main?phone='+phone)">已有账号，直接登录</van-button>
       <van-button size="normal" plain round block type="primary" custom-class="mgt20" @click="jumpTo('/pages/index/main')">返回首页</van-button>
     </div>
     <!-- <van-row>
@@ -46,11 +46,13 @@
       checked: false
     },
     mounted() {
+      let phone = this.$root.$mp.query.phone
+      this.phone = phone ? phone : ''
       this.resetZd()
     },
     methods: {
       resetZd() {
-        this.phone = ''
+        // this.phone = ''
         this.phoneError = ''
         this.password = ''
         this.passwordError = ''
@@ -121,22 +123,25 @@
         if (data.status == 0) {
           Toast.loading({
             mask: true,
-            message: '注册成功，登录中...'
+            message: '注册成功，请登录...'
           })
-          const data0 = await post('/recruitment/user/login.do', {
-            phone: this.phone,
-            password: this.password
-          })
-          console.log(data0)
-          if (data0.status == 0) {
-            setTimeout(() => {
-              Toast.clear()
-              wx.setStorageSync('user', data0.data)
-              self.jumpTo('/pages/center/main')
-            }, 800)
-          } else {
-            Toast.fail(data0.msg)
-          }
+          setTimeout(()=>{
+            self.jumpTo('/pages/login/main')
+          },1000)
+          // const data0 = await post('/recruitment/user/login.do', {
+          //   phone: this.phone,
+          //   password: this.password
+          // })
+          // console.log(data0)
+          // if (data0.status == 0) {
+          //   setTimeout(() => {
+          //     Toast.clear()
+          //     wx.setStorageSync('user', data0.data)
+          //     self.jumpTo('/pages/center/main')
+          //   }, 800)
+          // } else {
+          //   Toast.fail(data0.msg)
+          // }
         } else {
           Toast.fail(data.msg)
         }
