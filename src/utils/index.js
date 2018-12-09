@@ -98,7 +98,7 @@ export function transCodeToName(province, city, district, town,delimiter) {
   }
   if(city&&city=="445200"){
     // 暂时只做揭阳市
-    arr.push('揭阳')
+    arr.push('揭阳市')
   }
   if(district&&district!='445200'){
     console.log(district,jieyang.district[district])

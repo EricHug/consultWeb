@@ -44,6 +44,10 @@
           </div>
         </div>
       </div>
+      <div class="zx_warn" v-if="warn">
+        <label class="zx_warn_tit">有事通提醒您:</label>
+        <wxParse :content="warn" />
+      </div>
       <van-notice-bar mode="closeable" speed="20" text="为防欺诈，先打电话核实双方的资料，以免发生误会" />
       <van-notice-bar mode="closeable" speed="20" text="打电话时请说在有事通商务信息咨询网看到的" />
       <!--弹窗-->
@@ -85,6 +89,10 @@ import {
   formatTime,
   transCodeToName
 } from '@/utils/index'
+import {
+  mapState
+} from 'vuex'
+import wxParse from 'mpvue-wxparse'
 import Toast from '@/../static/vant/toast/toast'
 import homePic from '@/../static/assets/images/home1.png'
 import navigatorPic from '@/../static/assets/images/navigate.png'
@@ -114,11 +122,15 @@ export default {
       active: 0,
       detail: null,
       time: null,
-
+      // 警告事项
+      warn: null
     }
   },
-  components: {},
+  components: {
+    wxParse
+  },
   computed: {
+    ...mapState(['code', 'text', 'categoryList']),
     zongcheng() {
       let self = this
       if (self.detail) {
@@ -145,9 +157,52 @@ export default {
         }
       }
       return arr
+    },
+    categoryName() {
+      let self = this
+      let detail = self.detail
+      let categoryList = self.categoryList
+      if (detail && categoryList) {
+        let categoryName = categoryList.find(item => item.categoryId == detail.categoryId)['categoryName']
+        self.showWarn(categoryName)
+        return categoryName
+      } else {
+        return ''
+      }
     }
   },
+  watch: {
+  },
+  mounted() {
+  },
   methods: {
+    showWarn(categoryName) {
+      let self = this
+      console.log(categoryName)
+      self.warn = ''
+      if (categoryName.indexOf('房') > -1) {
+        self.warn = `<span class="txt">1）有事通网不承担任何交易损失，请谨慎判断相关信息的真实性&nbsp;
+<br>2）警惕不方便看房，先交定金
+<br>3）在实地看房签约前不要支付任何费用</span>`
+      }
+      if (categoryName.indexOf('车辆买卖') > -1) {
+        self.warn = `<span class="txt">1）有事通网不承担任何交易损失，请谨慎判断相关信息的真实性&nbsp;
+<br>2）为了您的资金安全，请选择见面交易，切勿提前汇款或者交保证金。
+<br>3）到店看车不需交任何费用！交易时注意核验行驶本、身份证以及车辆是否有抵押或贷款未还清等问题。
+<br>4）买卖套牌车、走私车、盗抢车是违法行为！</span>`
+      }
+      if (categoryName.indexOf('二手') > -1) {
+        self.warn = `<span class="txt">1）有事通网不承担任何交易损失，请谨慎判断相关信息的真实性&nbsp;
+<br>2）为了您的资金安全，请选择见面交易，不要提前汇款；
+<br>3）明显低于市场均价、或要求提前汇款的都有欺诈嫌疑，切勿轻信；
+<br>4）不要轻信并点击任何可疑电脑链接，以防被骗。</span>`
+      }
+      if (categoryName.indexOf('生活服务') > -1) {
+        self.warn = `<span class="txt">1）有事通网不承担任何交易损失，请谨慎判断相关信息的真实性&nbsp;
+<br>2）接受服务前请仔细核验对方经营资质，勿信夸张宣传和承诺&nbsp;
+<br>3）任何要求预付定金或付款至个人账号的行为，均可能存在诈骗风险，请提高警惕。</span>`
+      }
+    },
     goTo: function (url) {
       console.log(url)
       wx.navigateTo({
@@ -181,9 +236,9 @@ export default {
         Toast.fail('请输入投诉理由')
         return
       }
-      const data = await post('/recruitment/message/report.do',{
+      const data = await post('/recruitment/message/report.do', {
         msgId: self.detail.msgId,
-        reportReason:self.reportReason
+        reportReason: self.reportReason
       })
       if (data.status == 0) {
         this.show = false
@@ -294,6 +349,7 @@ export default {
     self.detail = wx.getStorageSync('detail')
     if (self.detail) {
       self.time = formatTime(self.detail.createTime)
+      self.phone = self.detail.linkphone
     }
   }
 }

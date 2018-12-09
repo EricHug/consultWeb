@@ -51,6 +51,12 @@
     font-size:28px;
     color:red;
     padding:0 44px;
+    position: relative;
+    .kf_button{
+        position: absolute;
+        top:2px;
+        right:46px;
+    }
 }
 .zx_nav{
     padding:32px 32px 0;
@@ -88,4 +94,7 @@
     height:50px!important;
     line-height:50px!important;
     padding:0 10px!important;
+}
+.bgColor1{
+    color:#ed6a0c
 }

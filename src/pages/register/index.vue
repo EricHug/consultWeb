@@ -123,35 +123,35 @@
         if (data.status == 0) {
           Toast.loading({
             mask: true,
-            message: '注册成功，请登录...'
+            message: '注册成功,登录中...'
           })
-          setTimeout(()=>{
-            self.jumpTo('/pages/login/main')
-          },1000)
-          // const data0 = await post('/recruitment/user/login.do', {
-          //   phone: this.phone,
-          //   password: this.password
-          // })
-          // console.log(data0)
-          // if (data0.status == 0) {
-          //   setTimeout(() => {
-          //     Toast.clear()
-          //     wx.setStorageSync('user', data0.data)
-          //     self.jumpTo('/pages/center/main')
-          //   }, 800)
-          // } else {
-          //   Toast.fail(data0.msg)
-          // }
+          // 置空
+          wx.removeStorageSync('JSESSIONID')
+          // setTimeout(()=>{
+          //   self.jumpTo('/pages/login/main')
+          // },1000)
+          const data0 = await post('/recruitment/user/login.do', {
+            phone: this.phone,
+            password: this.password
+          })
+          console.log(data0)
+          if (data0.status == 0) {
+            setTimeout(() => {
+              Toast.clear()
+              wx.setStorageSync('user', data0.data)
+              self.jumpTo('/pages/center/main')
+            }, 800)
+          } else {
+            Toast.fail(data0.msg)
+          }
         } else {
           Toast.fail(data.msg)
         }
-      },
+      }
     }
   }
-
 </script>
 
 <style lang="scss">
   @import "./style.scss";
-
 </style>

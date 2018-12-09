@@ -3,12 +3,12 @@
     <div class="panel_item">
       <div class="panel_header">
         <div class="panel_left">
-          <h2 class="panel_title">{{release.title}}</h2>
+          <h2 class="panel_title">{{release?release.title:''}}</h2>
           <p class="panel_desc">{{leftDays}}</p>
         </div>
         <div class="panel_right">
           <p class="panel_state">{{stateName}}</p>
-          <van-button size="small" custom-class="zx_bgColor" @click="edit">编辑</van-button>
+          <van-button size="small" custom-class="zx_bgColor" @click="edit" v-if="isEdit">编辑</van-button>
         </div>
       </div>
     </div>
@@ -28,13 +28,23 @@ export default {
     return {
       release: null,
       stateName: null,
-      leftDays: null
+      leftDays: null,
+      isEdit:null
     }
   },
   components: {
     card
   },
   methods: {
+    async getState() {
+      let self = this
+      const data = await post('/api/state/query')
+      if (data.code == 0) {
+        self.isEdit = data.data.isEdit
+      } else {
+        Toast.fail(data.data.msg)
+      }
+    },
     async getUserRelease() {
       let self = this
       const data = await get('/recruitment/message/selectMessageByUserId.do')
@@ -90,8 +100,9 @@ export default {
       }
     },
   },
-  created() {
+  onShow() {
     this.getUserRelease()
+    this.getState()
   },
   mounted() {
   }

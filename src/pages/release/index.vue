@@ -4,9 +4,12 @@
       <form @submit="evaSubmit">
         <van-cell-group>
           <!-- <van-field :value="time+'个月'" required readonly label="发布时限" /> -->
-          <van-field required :value="title" clearable label="标题" placeholder="请输入标题" bind:click-icon="onClickIcon" @change="onChange1" />
-          <van-field required :value="linkman" clearable label="联系人" placeholder="请输入联系人" bind:click-icon="onClickIcon" @change="onChange2" />
-          <van-field required :value="linkphone" clearable label="联系电话" placeholder="请输入联系电话" bind:click-icon="onClickIcon" @change="onChange3" />
+          <van-field required :value="title" clearable label="标题" placeholder="请输入标题" bind:click-icon="onClickIcon"
+            @change="onChange1" />
+          <van-field required :value="linkman" clearable label="联系人" placeholder="请输入联系人" bind:click-icon="onClickIcon"
+            @change="onChange2" />
+          <van-field required :value="linkphone" clearable label="联系电话" placeholder="请输入联系电话" bind:click-icon="onClickIcon"
+            @change="onChange3" />
           <van-cell :value="areaText" required @click="chooseArea" is-link>
             <view slot="title">
               <span class="van-cell-text">联系地址</span>
@@ -23,7 +26,9 @@
               </view>
             </picker>
           </van-cell>
-          <van-field :value="address" v-if="!showArea" custom-class="ajust_textarea_1" clearable label=" " type="textarea" placeholder="请输入详细地址" bind:click-icon="onClickIcon" autosize maxlength="2000" :border="true" name="address" @change="onChange4" />
+          <van-field :value="address" v-if="!showArea" custom-class="ajust_textarea_1" clearable label=" " type="textarea"
+            placeholder="请输入详细地址" bind:click-icon="onClickIcon" autosize maxlength="2000" :border="true" name="address"
+            @change="onChange4" />
           <div @click="chooseImage('messageImage1')" class="zx_img_container_pa">
             <van-field label="图片1" readonly use-icon-slot :border="true" required is-link />
             <view class="zx_img_container">
@@ -40,9 +45,10 @@
         <van-cell-group>
           <van-field required label="详细信息" :border="false" disabled />
         </van-cell-group>
-        <textarea :value="information" v-if="!showArea" class="zx_textarea" placeholder-class="zx_textarea_placeholder" name="information" placeholder="最多2000字" id="" cols="30" rows="10" maxlength="2000" @blur="confirmTextarea" />
+        <textarea :value="information" v-if="!showArea" class="zx_textarea" placeholder-class="zx_textarea_placeholder"
+          name="information" placeholder="最多2000字" id="" cols="30" rows="10" maxlength="2000" @blur="confirmTextarea" />
         <!--选择类别-->
-        <van-cell-group v-if="release&&release['state']=='0'">
+        <van-cell-group v-if="!release||release.state==0||!isPay">
           <van-cell title="发布类别" required custom-class="selectCategory" @click="chooseCategory" is-link>
             <view slot="title">
               <span class="van-cell-text"></span>
@@ -54,6 +60,10 @@
             </picker>
           </van-cell>
           <van-cell title="费用" v-if="categoryAmount!=null" custom-class="" :value="categoryAmount">
+          </van-cell>
+        </van-cell-group>
+        <van-cell-group v-else>
+          <van-cell title="发布类别" required custom-class="" :value="categoryList[indexCategory]['categoryName']" value-class="disabled">
           </van-cell>
         </van-cell-group>
         <!--省市区-->
@@ -79,7 +89,8 @@ import Toast from '@/../static/vant/toast/toast'
 import Dialog from '@/../static/vant/dialog/dialog'
 import {
   get,
-  post
+  post,
+  formatTime, transCodeToName
 } from "../../utils"
 import { setTimeout } from 'timers';
 // Use Vuex
@@ -112,11 +123,14 @@ export default {
     index: 0,
     // 类别
     indexCategory: 0,
-    categoryId: null,
-    categoryAmount: null,
+    // categoryId: null,
+    // categoryAmount: null,
     categoryList: [],
+    // 是否免费
+    isPay: null,
     // 用户发布的信息
     release: {},
+    state: null,
     stateName: null
   },
   watch: {
@@ -137,6 +151,23 @@ export default {
         }
       }
       return result
+    },
+    categoryId(){
+      let self = this
+      let indexCategory = self.indexCategory
+      console.log('indexCategory',indexCategory)
+      return self.categoryList.length?self.categoryList[indexCategory]['categoryId']:null
+    },
+    categoryAmount(){
+      let self = this
+      if(self.isPay == 1){
+        let indexCategory = self.indexCategory
+        return self.categoryList.length?self.categoryList[indexCategory]['categoryFee'] + '元':null
+      }else if (self.isPay == 0){
+        return '免费'
+      }else{
+        return self.isPay
+      }
     }
   },
   onLoad(options) {
@@ -150,9 +181,8 @@ export default {
   methods: {
     initData() {
       let self = this
-      console.log(11111111111)
       // 编辑初始赋值
-      let { title, linkman, linkphone, information, address, district, town, messageImage1, messageImage2 } = self.release
+      let { title, linkman, linkphone, information, address, district, town, image1, image2, categoryId } = self.release
       self.title = title
       self.linkman = linkman
       self.linkphone = linkphone
@@ -160,8 +190,23 @@ export default {
       self.address = address
       self.district = district
       self.town = town
-      self.messageImage1 = messageImage1
-      self.messageImage2 = messageImage2
+      self.messageImage1 = image1
+      self.messageImage2 = image2
+      self.indexCategory = self.categoryList.findIndex(item=>item.categoryId == categoryId)
+      //
+      self.areaCode = district
+      self.areaCode1 = town
+      self.areaText = transCodeToName(self.province,self.city,self.district,null,'')  // 省市区文案
+      self.index = Object.keys(jieyang['town'][district]).findIndex(item => item == town)
+    },
+    async getState() {
+      let self = this
+      const data = await post('/api/state/query')
+      if (data.code == 0) {
+        self.isPay = data.data.isPay
+      } else {
+        Toast.fail(data.data.msg)
+      }
     },
     async getUserRelease() {
       let self = this
@@ -171,6 +216,7 @@ export default {
         //
         self.initData()
         let state = data.data['state']
+        self.state = state
         if (state == 0) {
           self.stateName = '未发布'
         } else if (state == 1) {
@@ -193,11 +239,6 @@ export default {
       const data = await post('/api/category/query')
       if (data.code == 0) {
         self.categoryList = data.data
-        if (!self.categoryId) {
-          // picker初始化（分类）
-          self.categoryId = self.categoryList[self.indexCategory]['id']
-          self.categoryAmount = self.categoryList[self.indexCategory]['categoryFee'] + '元'
-        }
       } else {
         Toast.fail(data.data.msg)
       }
@@ -246,6 +287,49 @@ export default {
       }
       return result
     },
+    // 上传图片
+    async uploadPhoto(name,filePath,msgId){
+      let self = this
+      if(!msgId){
+        Toast.fail('图片上传缺少msgId')
+        return
+      }
+      console.log(name, filePath, '上传ing...')
+      return new Promise((resolve,reject)=>{
+        wx.uploadFile({
+            url: 'https://www.aiheart.top/recruitment/file/uploadPhoto.do',
+            filePath,
+            name,
+            header: {
+              "content-type": "multipart/form-data",
+              'accept': 'application/json',
+              'cookie': 'JSESSIONID=' + wx.getStorageSync('JSESSIONID')
+            },
+            formData: {
+              // 其他参数
+              msgId
+            },
+            success: function (res) {
+              let data = JSON.parse(res.data)
+              console.log(data);
+              if (data.status == 0) {
+                resolve(data)
+                // Toast.success('上传成功')
+              } else if (data.status == 2) {
+                // 未登录
+                wx.redirectTo({
+                  url: '/pages/login/main'
+                })
+              } else {
+                Toast.fail(data.msg)
+              }
+            },
+            fail: function (res) {
+              console.log(res);
+            }
+          })
+      })
+    },
     // 提交
     async evaSubmit(event) {
       console.log(event.mp.detail)
@@ -273,67 +357,54 @@ export default {
         Toast.fail('至少上传一张图片')
         return
       }
-      let temParams = {
-        messageImage1,
-        messageImage2
-      }
-      console.log(temParams)
-      for (let i in temParams) {
-        if (temParams.hasOwnProperty(i) && temParams[i]) {
-          console.log(i, temParams[i], '上传ing...')
-          // 先上传图片
-          wx.uploadFile({
-            url: 'https://www.aiheart.top/recruitment/file/uploadPhoto.do',
-            filePath: temParams[i],
-            name: i,
-            header: {
-              "content-type": "multipart/form-data",
-              'accept': 'application/json',
-              'cookie': 'JSESSIONID=' + wx.getStorageSync('JSESSIONID')
-            },
-            formData: {
-              // 其他参数
-            },
-            success: function (res) {
-              let data = JSON.parse(res.data)
-              console.log(data);
-              if (data.status == 0) {
-                // Toast.success('上传成功')
-              } else if (data.status == 2) {
-                // 未登录
-                wx.redirectTo({
-                  url: '/pages/login/main'
-                })
-              } else {
-                Toast.fail(data.msg)
-              }
-            },
-            fail: function (res) {
-              console.log(res);
-            }
-          })
-        }
-      }
       // 保存信息
       Toast.loading({
         mask: true,
         message: '正在提交...'
       })
       let url = ''
-      if (self.release.state == 2) {
+      if (self.release&&self.release.state == 2) {
         url = '/recruitment/message/updateMessageByPrimaryKeySelective.do'
         params['msgId'] = self.release['msgId']
       } else {
         url = '/recruitment/message/insertMessage.do'
       }
-      Toast.loading({
-        mask: true,
-        // message: '保存中...'
-      })
+      // Toast.loading({
+      //   mask: true,
+      //   // message: '保存中...'
+      // })
       const data = await post(url, params)
       console.log(data)
       if (data.status == 0) {
-        //
+        let msgId = params['msgId'] ? params['msgId'] : data.data
+        // 发布信息保存后
+        let temParams = {
+          messageImage1,
+          messageImage2
+        }
+        // 编辑状态
+        let release = self.release
+        let existPics = []
+        console.log('release',release)
+        console.log('state',self.state)
+        if(self.state == 1 || self.state == 2){
+          existPics.push(release['image1'])
+          existPics.push(release['image2'])
+        }
+        console.log(existPics)
+        console.log(temParams)
+        for (let i in temParams) {
+          if (temParams.hasOwnProperty(i) && temParams[i] && !existPics.includes(temParams[i])) {
+            console.log(11111)
+            // 先上传图片
+            let data1 = await self.uploadPhoto(i,temParams[i],msgId)
+            if(data1.status != 0){
+              Toast.fail(data1.msg)
+            }
+            console.log(33333333333333,data1)
+          }
+        }
+        
         Toast.loading({
           mask: true,
           message: '更新成功,跳转中...'
@@ -341,9 +412,10 @@ export default {
         setTimeout(() => {
           self.jumpTo('/pages/center/main')
         }, 500)
-      } else {
-        Toast.fail(data.msg)
-      }
+
+        } else {
+          Toast.fail(data.msg)
+        }
     },
     confirmTextarea(event) {
       console.log(event)
@@ -388,8 +460,6 @@ export default {
       console.log(value)
       // this.index = value.value
       this.indexCategory = value.value
-      this.categoryAmount = this.categoryList[this.indexCategory]['categoryFee'] + '元'
-      this.categoryId = this.categoryList[this.indexCategory]['id']
     },
     onClose() {
       this.showArea = false

@@ -3,42 +3,42 @@
     "navList":[{
         "txt": "招聘信息",
         "pic": "/static/assets/images/nav_0.png",
-        "url": ""
+        "categoryId": "1,2"
       },
       {
         "txt": "顺车顺货",
         "pic": "/static/assets/images/nav_1.png",
-        "url": ""
+        "categoryId": "3,4"
       },
       {
         "txt": "二手交易",
         "pic": "/static/assets/images/nav_2.png",
-        "url": ""
+        "categoryId": "5"
       },
       {
         "txt": "车辆买卖",
         "pic": "/static/assets/images/nav_3.png",
-        "url": ""
+        "categoryId": "6"
       },
       {
         "txt": "生活服务",
         "pic": "/static/assets/images/nav_4.png",
-        "url": ""
+        "categoryId": "7"
       },
       {
         "txt": "房屋租售",
         "pic": "/static/assets/images/nav_5.png",
-        "url": ""
+        "categoryId": "8"
       },
       {
         "txt": "宠物服务",
         "pic": "/static/assets/images/nav_6.png",
-        "url": ""
+        "categoryId": "9"
       },
       {
         "txt": "绿色信息",
         "pic": "/static/assets/images/nav_7.png",
-        "url": ""
+        "categoryId": "10"
       }
     ]
 }

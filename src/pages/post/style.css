@@ -47,6 +47,10 @@
   width: calc(100% - 150rpx);
 }
 
+.zx_tip {
+  padding-bottom: 50px;
+}
+
 .zx_tip .jubao {
   padding: 20px;
   background: #fff;
@@ -89,6 +93,15 @@
   background-size: 100%;
 }
 
+.zx_warn {
+  font-size: 26px;
+  color: #999;
+}
+
+.zx_warn .zx_warn_tit {
+  color: #666;
+}
+
 .calllink {
   color: #13227a;
   text-decoration: underline;
@@ -109,4 +122,13 @@
 
 .loading {
   margin: 40px auto;
+}
+
+.image_box {
+  width: 100%;
+}
+
+.image_box .image {
+  width: 100%;
+  padding-top: 24px;
 }

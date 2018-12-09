@@ -39,7 +39,7 @@ export default {
     },
     categoryName(){
       let self = this
-      return this.categoryList?this.categoryList.find(item => item.id == self.categoryId)['categoryName'].slice(0, 4):''
+      return this.categoryList?this.categoryList.find(item => item.categoryId == self.categoryId)['categoryName'].slice(0, 4):''
     }
   },
   methods: {}
