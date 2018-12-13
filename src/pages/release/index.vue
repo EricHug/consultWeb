@@ -4,12 +4,12 @@
       <form @submit="evaSubmit">
         <van-cell-group>
           <!-- <van-field :value="time+'个月'" required readonly label="发布时限" /> -->
-          <van-field required :value="title" clearable label="标题" placeholder="请输入标题" bind:click-icon="onClickIcon"
+          <van-field required :value="title" maxlength="20" clearable label="标题" placeholder="请输入标题" bind:click-icon="onClickIcon"
             @change="onChange1" />
-          <van-field required :value="linkman" clearable label="联系人" placeholder="请输入联系人" bind:click-icon="onClickIcon"
-            @change="onChange2" />
-          <van-field required :value="linkphone" clearable label="联系电话" placeholder="请输入联系电话" bind:click-icon="onClickIcon"
-            @change="onChange3" />
+          <van-field required :value="linkman" maxlength="20" clearable label="联系人" placeholder="请输入联系人"
+            bind:click-icon="onClickIcon" @change="onChange2" />
+          <van-field required :value="linkphone" maxlength="11" clearable label="联系电话" placeholder="请输入联系电话"
+            bind:click-icon="onClickIcon" @change="onChange3" />
           <van-cell :value="areaText" required @click="chooseArea" is-link>
             <view slot="title">
               <span class="van-cell-text">联系地址</span>
@@ -158,6 +158,11 @@ export default {
       console.log('indexCategory',indexCategory)
       return self.categoryList.length?self.categoryList[indexCategory]['categoryId']:null
     },
+    categoryFee(){
+      let self = this
+      let indexCategory = self.indexCategory
+      return self.categoryList.length>0?self.categoryList[indexCategory]["categoryFee"]:null
+    },
     categoryAmount(){
       let self = this
       if(self.isPay == 1){
@@ -171,33 +176,57 @@ export default {
     }
   },
   onLoad(options) {
+    console.log('onLoadonLoadonLoadonLoadonLoadonLoad',this.$options.data()['release'])
     this.time = options.time
     this.getCategory()
+    this.getUserRelease()
+  },
+  onUnLoad(){
+    console.log('发布页面onUnLoad')
   },
   mounted() {
     let self = this
-    self.getUserRelease()
+    self.getState()
+    // self.getUserRelease()
   },
   methods: {
     initData() {
       let self = this
+      console.log('已经到了初始这里啦= =',self.release)
       // 编辑初始赋值
-      let { title, linkman, linkphone, information, address, district, town, image1, image2, categoryId } = self.release
-      self.title = title
-      self.linkman = linkman
-      self.linkphone = linkphone
-      self.information = information
-      self.address = address
-      self.district = district
-      self.town = town
-      self.messageImage1 = image1
-      self.messageImage2 = image2
-      self.indexCategory = self.categoryList.findIndex(item=>item.categoryId == categoryId)
-      //
-      self.areaCode = district
-      self.areaCode1 = town
-      self.areaText = transCodeToName(self.province,self.city,self.district,null,'')  // 省市区文案
-      self.index = Object.keys(jieyang['town'][district]).findIndex(item => item == town)
+      if(self.release){
+        let { title, linkman, linkphone, information, address, district, town, image1, image2, categoryId } = self.release
+        self.title = title
+        self.linkman = linkman
+        self.linkphone = linkphone
+        self.information = information
+        self.address = address
+        self.district = district
+        self.town = town
+        self.messageImage1 = image1
+        self.messageImage2 = image2
+        self.indexCategory = self.categoryList.findIndex(item=>item.categoryId == categoryId)
+        //
+        self.areaCode = district
+        self.areaCode1 = town
+        self.areaText = transCodeToName(self.province,self.city,self.district,null,'')  // 省市区文案
+        self.index = Object.keys(jieyang['town'][district]).findIndex(item => item == town)
+      }else{
+        self.title = ''
+        self.linkman = ''
+        self.linkphone = ''
+        self.information = ''
+        self.address = ''
+        self.areaText = ''
+        self.messageImage1 = null
+        self.messageImage2 = null
+        self.index = 0
+        self.indexCategory = 0
+        self.isPay = null
+        self.state = null
+        self.stateName = null
+        self.getState()
+      }
     },
     async getState() {
       let self = this
@@ -363,7 +392,7 @@ export default {
         message: '正在提交...'
       })
       let url = ''
-      if (self.release&&self.release.state == 2) {
+      if (self.release) {
         url = '/recruitment/message/updateMessageByPrimaryKeySelective.do'
         params['msgId'] = self.release['msgId']
       } else {
@@ -394,7 +423,7 @@ export default {
         console.log(existPics)
         console.log(temParams)
         for (let i in temParams) {
-          if (temParams.hasOwnProperty(i) && temParams[i] && !existPics.includes(temParams[i])) {
+          if (temParams.hasOwnProperty(i) && temParams[i] && !existPics.includes(temParams[i]) && temParams[i].indexOf('http') == -1) {
             console.log(11111)
             // 先上传图片
             let data1 = await self.uploadPhoto(i,temParams[i],msgId)
@@ -407,15 +436,51 @@ export default {
         
         Toast.loading({
           mask: true,
-          message: '更新成功,跳转中...'
-        })
-        setTimeout(() => {
-          self.jumpTo('/pages/center/main')
-        }, 500)
+          message: "跳转中..."
+        });
+        // 可编辑
+        if(self.state == 1 || self.state == 2){
+          Toast.success('编辑成功')
+          setTimeout(() => {
+            wx.reLaunch({
+              url: '/pages/center/main'
+            })
+            // self.jumpTo("/pages/center/main")
+          }, 500);
+        }else if(self.isPay == 0){
+          Toast.success('更新成功')
+          setTimeout(() => {
+            wx.reLaunch({
+              url: '/pages/center/main'
+            })
+            // self.jumpTo("/pages/center/main")
+          }, 500);
+        }else{
+          self.payAction(msgId)
+        }
 
         } else {
           Toast.fail(data.msg)
         }
+    },
+    payAction(msgId){
+      let self = this
+      if (self.isPay == 0) {
+        setTimeout(() => {
+          wx.reLaunch({
+            url: '/pages/center/main'
+          })
+          // self.jumpTo("/pages/center/main")
+        }, 500)
+      } else if (self.isPay == 1) {
+        if(self.categoryFee){
+          self.goTo(`/pages/buy/main?unit=${self.categoryFee}&msgId=${msgId}`)
+        }else{
+          Toast.fail("获取price有误")
+        }
+      } else {
+        Toast.fail("获取state pay有误")
+      }
     },
     confirmTextarea(event) {
       console.log(event)

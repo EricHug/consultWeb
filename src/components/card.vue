@@ -21,7 +21,7 @@ import {
   mapState
 } from 'vuex'
 export default {
-  props: ['title', 'createTime', 'province', 'city','district', 'town', 'image1', 'address', 'categoryId'],
+  props: ['title', 'releaseTime', 'province', 'city','district', 'town', 'image1', 'address', 'categoryId'],
   data() {
     return {
       time: null
@@ -29,7 +29,7 @@ export default {
   },
   mounted() {
     let self = this
-    this.time = formatTime(this.createTime).slice(0, 10)
+    this.time = formatTime(this.releaseTime).slice(0, 10)
   },
   computed: {
     ...mapState(['categoryList']),

@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <van-cell-group>
-      <van-field :value="phone" label="手机号" placeholder="请输入手机号" :error-message="phoneError" @change="onChange1" />
-      <van-field :value="password" type="password" label="密码" placeholder="请输入密码" :error-message="passwordError"
+      <van-field :value="phone" maxlength="11" label="手机号" placeholder="请输入手机号" :error-message="phoneError" @change="onChange1" />
+      <van-field :value="password" maxlength="20" type="password" label="密码" placeholder="请输入密码" :error-message="passwordError"
         :border="false" @change="onChange2" />
     </van-cell-group>
     <div class="zx_login_act">

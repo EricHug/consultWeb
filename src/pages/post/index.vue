@@ -34,7 +34,7 @@
         <div class="jubao">
           <div class="jubao-font">
             <p class="one-line">如遇无效、虚假、诈骗信息，请立即举报</p>
-            <p class="two-line">求职过程请勿缴纳费用，谨防诈骗！若信息不实请举报。</p>
+            <p class="two-line">换位思考，做个文明人。</p>
           </div>
           <div class="jubao-logo">
             <a tongji_tag="m_detail_job_full_jubao_m" @click="toReport">
