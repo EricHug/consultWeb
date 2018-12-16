@@ -55,7 +55,7 @@
             </view>
             <picker @change="confirmCategory" range-key="categoryName" :value="indexCategory" :range="categoryList">
               <view class="picker">
-                {{categoryList[indexCategory]['categoryName']}}
+                {{categoryList.length>0?categoryList[indexCategory]['categoryName']:''}}
               </view>
             </picker>
           </van-cell>
@@ -63,7 +63,7 @@
           </van-cell>
         </van-cell-group>
         <van-cell-group v-else>
-          <van-cell title="发布类别" required custom-class="" :value="categoryList[indexCategory]['categoryName']" value-class="disabled">
+          <van-cell title="发布类别" required custom-class="" :value="categoryList.length>0?categoryList[indexCategory]['categoryName']:''" value-class="disabled">
           </van-cell>
         </van-cell-group>
         <!--省市区-->
@@ -90,7 +90,7 @@ import Dialog from '@/../static/vant/dialog/dialog'
 import {
   get,
   post,
-  formatTime, transCodeToName
+  formatTime, transCodeToName,host
 } from "../../utils"
 import { setTimeout } from 'timers';
 // Use Vuex
@@ -326,7 +326,7 @@ export default {
       console.log(name, filePath, '上传ing...')
       return new Promise((resolve,reject)=>{
         wx.uploadFile({
-            url: 'https://www.aiheart.top/recruitment/file/uploadPhoto.do',
+            url: host+'/recruitment/file/uploadPhoto.do',
             filePath,
             name,
             header: {

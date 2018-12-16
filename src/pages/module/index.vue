@@ -25,7 +25,7 @@
         <van-tab title="个人招聘">
           <div class="zx_content_item" v-if="postList1.length>0">
             <div v-for="(item,index) in postList1" :key="item.msgId" @click="goDetail(item)">
-              <card :title="item.title" :createTime="item.createTime" :province="item.province" :city="item.city" :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId" :key="item.msgId"></card>
+              <card :title="item.title" :releaseTime="item.releaseTime" :province="item.province" :city="item.city" :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId" :key="item.msgId"></card>
             </div>
           </div>
           <div class="tip" v-else>
@@ -36,7 +36,7 @@
         <van-tab title="企业招聘">
           <div class="zx_content_item" v-if="postList2.length>0">
             <div v-for="(item,index) in postList2" :key="item.msgId" @click="goDetail(item)">
-              <card :title="item.title" :createTime="item.createTime" :province="item.province" :city="item.city" :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId" :key="item.msgId"></card>
+              <card :title="item.title" :releaseTime="item.releaseTime" :province="item.province" :city="item.city" :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId" :key="item.msgId"></card>
             </div>
           </div>
           <div class="tip" v-else>
@@ -50,7 +50,7 @@
         <van-tab title="车找货">
           <div class="zx_content_item" v-if="postList3.length>0">
             <div v-for="(item,index) in postList3" :key="item.msgId" @click="goDetail(item)">
-              <card :title="item.title" :createTime="item.createTime" :province="item.province" :city="item.city" :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId" :key="item.msgId"></card>
+              <card :title="item.title" :releaseTime="item.releaseTime" :province="item.province" :city="item.city" :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId" :key="item.msgId"></card>
             </div>
           </div>
           <div class="tip" v-else>
@@ -61,7 +61,7 @@
         <van-tab title="货找车">
           <div class="zx_content_item" v-if="postList4.length>0">
             <div v-for="(item,index) in postList4" :key="item.msgId" @click="goDetail(item)">
-              <card :title="item.title" :createTime="item.createTime" :province="item.province" :city="item.city" :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId" :key="item.msgId"></card>
+              <card :title="item.title" :releaseTime="item.releaseTime" :province="item.province" :city="item.city" :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId" :key="item.msgId"></card>
             </div>
           </div>
           <div class="tip" v-else>
@@ -73,7 +73,7 @@
       <template v-if="index != 0 && index !=1">
         <div class="zx_content_item" v-if="postList0.length>0">
           <div v-for="(item,index) in postList0" :key="item.msgId" @click="goDetail(item)">
-            <card :title="item.title" :createTime="item.createTime" :province="item.province" :city="item.city" :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId" :key="item.msgId"></card>
+            <card :title="item.title" :releaseTime="item.releaseTime" :province="item.province" :city="item.city" :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId" :key="item.msgId"></card>
           </div>
         </div>
         <div class="tip" v-else>
@@ -194,7 +194,7 @@ export default {
       console.log('target', 'postList' + target)
       if (data.status == 0) {
         self['postList' + target] = data.data.list
-        self.totalPageNum = data.data.pageNum
+        self.totalPageNum = data.data.pages
       } else {
         Toast.fail(data.msg)
       }

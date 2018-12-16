@@ -32,14 +32,14 @@ import {
   isPhoneNumber,
   isValidPassword
 } from '@/utils/index'
-import fake from '@/utils/fake'
 import Toast from '@/../static/vant/toast/toast'
 import Dialog from '@/../static/vant/dialog/dialog'
 import areaList from '@/utils/area.js'
 import { setTimeout } from 'timers'
 import {
   get,
-  post
+  post,
+  host
 } from "../../utils"
 // Use Vuex
 export default {
@@ -73,7 +73,7 @@ export default {
           const tempFilePaths = res.tempFilePaths
           self.avatarUrl = tempFilePaths[0]
           wx.uploadFile({
-            url: 'https://www.aiheart.top/recruitment/file/uploadPhoto.do',
+            url: host+'/recruitment/file/uploadPhoto.do',
             filePath: tempFilePaths[0],
             name: 'userPhoto',
             header: {

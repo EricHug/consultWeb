@@ -166,7 +166,7 @@ export default {
       })
       if (data.status == 0) {
         self.postList = data.data.list
-        self.totalPageNum = data.data.pageNum
+        self.totalPageNum = data.data.pages
       } else {
         Toast.fail(data.msg)
       }

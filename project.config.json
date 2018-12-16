@@ -1,7 +1,7 @@
 {
 	"description": "项目配置文件。",
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
@@ -11,7 +11,7 @@
 	},
 	"miniprogramRoot": "dist/",
 	"compileType": "miniprogram",
-	"appid": "wx638709e94b40b5f0",
+	"appid": "wxd70527e4a88bdbce",
 	"projectname": "zx",
 	"condition": {
 		"search": {

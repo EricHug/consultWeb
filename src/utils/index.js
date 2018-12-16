@@ -133,7 +133,7 @@ export function isValidPassword(str) {
 
 //-------------------------------------------------------------------------请求的封装
 
-const host = 'https://www.aiheart.top';
+const host = 'https://www.bstswxxzcfwb.com';
 export {
   host
 }

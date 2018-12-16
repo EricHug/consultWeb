@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/main",
+    "pages/register/main",
     "pages/releaseList/main",
     "pages/release/main",
     "pages/selectZone/main",
@@ -8,7 +9,6 @@
     "pages/user/main",
     "pages/post/main",
     "pages/login/main",
-    "pages/register/main",
     "pages/module/main",
     "pages/protocol/main",
     "pages/job/main",

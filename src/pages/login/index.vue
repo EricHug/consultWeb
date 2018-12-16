@@ -26,7 +26,6 @@
     isPhoneNumber,
     isValidPassword
   } from '@/utils/index'
-  import fake from '@/utils/fake'
   import Toast from '@/../static/vant/toast/toast'
   import Dialog from '@/../static/vant/dialog/dialog'
   import {
@@ -117,31 +116,6 @@
         } else {
           Toast.fail(data.msg)
         }
-        // let {
-        //   phone,
-        //   password
-        // } = fake
-        // if (this.phone == phone && this.password == password) {
-        //   let second = 1;
-        //   const timer = setInterval(() => {
-        //     second--;
-        //     if (second) {
-        //       Toast.loading({
-        //         mask: false,
-        //         message: '登录中...'
-        //       });
-        //     } else {
-        //       clearInterval(timer);
-        //       Toast.clear();
-        //       wx.setStorageSync('phone', phone)
-        //       wx.switchTab({
-        //         url: '/pages/center/main'
-        //       })
-        //     }
-        //   }, 1000);
-        // }else{
-        //   Toast.fail('密码错误');
-        // }
       },
       onChange1(event) {
         // event.mp.detail 为当前输入的值

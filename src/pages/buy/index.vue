@@ -19,7 +19,6 @@
 </template>
 
 <script>
-  import fake from '@/utils/fake'
   import Toast from '@/../static/vant/toast/toast'
   import Dialog from '@/../static/vant/dialog/dialog'
   import {
@@ -118,26 +117,6 @@
         } else {
           Toast.fail('getOpenId--出错:' + serverData.msg);
         }
-        // wx.request({
-        //   url: 'https://www.aiheart.top/recruitment/getOpenId.do',
-        //   method: 'POST',
-        //   header: {
-        //     'content-type': 'application/x-www-form-urlencoded'
-        //   },
-        //   data: {
-        //     'code': code
-        //   },
-        //   success: function (res) {
-        //     var serverData = res.data;
-        //     if (serverData.status == 0) {
-        //       console.log('openid:' + serverData.data.openid);
-        //       var openId = serverData.data.openid;
-        //       self.xiadan(openId);
-        //     } else {
-        //       console.log('getOpenId--出错:' + serverData.msg);
-        //     }
-        //   }
-        // })
       },
       //3.下单
       async xiadan(openId) {
@@ -164,41 +143,6 @@
           console.log("信息校验有误(server):" + serverData.msg);
         }
 
-        // wx.request({
-        //   url: 'https://www.aiheart.top/recruitment/xiadan.do',
-        //   method: 'POST',
-        //   header: {
-        //     'content-type': 'application/x-www-form-urlencoded',
-        //     'accept': 'application/json',
-        //     'cookie': 'JSESSIONID=' + wx.getStorageSync('JSESSIONID')
-        //   },
-        //   //msgId buyMonthNum 动态获取
-        //   data: {
-        //     'openid': openId,
-        //     'msgId': '25',
-        //     'buyMonthNum': '1'
-        //   },
-        //   success: function (res) {
-        //     console.log("res:" + res);
-        //     //当return_code 是 SUCCESS 时 表示交易 正常进行中，可以获取prepay_id
-        //     var serverData = res.data;
-        //     if (serverData.status == 0) {
-        //       if (serverData.data.return_code == 'SUCCESS') {
-        //         console.log("统一下单服务端返回prepay_id:" + serverData.data.prepay_id);
-        //         var prepay_id = serverData.data.prepay_id;
-        //         self.sign(prepay_id);
-        //       } else {
-        //         //当return_code 是 FAIL 时 表示交易 异常，可以显示异常信息 如：签名异常
-        //         console.log("信息校验有误(tencent):" + serverData.data.return_msg);
-        //       }
-        //     } else {
-        //       console.log("信息校验有误(server):" + serverData.msg);
-        //     }
-        //   },
-        //   fail: function (res) {
-        //     console.log("res:" + res);
-        //   }
-        // })
       },
       //4.再签名
       async sign(prepay_id) {
@@ -212,27 +156,6 @@
         } else {
           console.log('再签名失败')
         }
-
-        // wx.request({
-        //   url: 'https://www.aiheart.top/recruitment/sign.do',
-        //   method: 'POST',
-        //   header: {
-        //     'content-type': 'application/x-www-form-urlencoded'
-        //   },
-        //   data: {
-        //     'repay_id': prepay_id
-        //   },
-        //   success: function (res) {
-        //     var serverData = res.data;
-        //     if (serverData.status == 0) {
-        //       self.requestPayment(serverData.data);
-        //     }
-
-        //   },
-        //   fail: function (res) {
-        //     console.log('再签名失败');
-        //   }
-        // })
       },
       //5.申请支付
       requestPayment: function (obj) {
