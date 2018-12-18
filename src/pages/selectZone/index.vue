@@ -4,7 +4,7 @@
       @clickItem="onClickItem" custom-class="setHeight" />
     <div class="sz_buttons">
       <!-- <span>区域选择：</span> -->
-      <van-button type="primary" size="normal" custom-class="zx_bgColor" @click="confirmZone">确定</van-button>
+      <van-button type="primary" size="normal" custom-class="zx_bgColorz" @click="confirmZone">确定</van-button>
       <van-button type="primary" size="normal" plain custom-class="zx_bgColor plain" @click="cancel">取消</van-button>
     </div>
   </div>

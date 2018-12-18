@@ -33,7 +33,7 @@
     <div class="zx_content">
       <div class="zx_content_item">
         <div v-for="(item,index) in postList" :key="item.msgId" @click="goDetail(item)">
-          <card :title="item.title" :releaseTime="item.releaseTime" :province="item.province" :city="item.city" :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId" :key="item.msgId"></card>
+          <card :title="item.title" :photo="item.photo" :releaseTime="item.releaseTime" :province="item.province" :city="item.city" :district="item.district" :town="item.town" :address="item.address" :image1="item.image1" :categoryId="item.categoryId" :key="item.msgId"></card>
         </div>
       </div>
     </div>
@@ -50,6 +50,7 @@ import {
   post
 } from "../../utils"
 import configuration from '@/utils/configuration.json'
+
 
 export default {
   data() {

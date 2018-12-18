@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/main",
+    "pages/resetPsw/main",
     "pages/register/main",
     "pages/releaseList/main",
     "pages/release/main",
@@ -18,15 +19,15 @@
   ],
   "window": {
     "backgroundTextStyle": "#13227a",
-    "navigationBarBackgroundColor": "#fff",
+    "navigationBarBackgroundColor": "#ff5730",
     "navigationBarTitleText": "有事通商务信息咨询服务部",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "#fff"
   },
   "tabBar": {
     "color": "#999",
-    "selectedColor": "#222",
-    "backgroundColor": "#f8f9fb",
-    "borderStyle": "white",
+    "selectedColor": "#f82d18",
+    "backgroundColor": "#fff",
+    "borderStyle": "#f8f9fb",
     "list": [{
         "pagePath": "pages/index/main",
         "text": "首页",

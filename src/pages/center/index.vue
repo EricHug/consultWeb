@@ -10,7 +10,7 @@
       </div>
       <div class="zx_user_pic">
         <img :src="user.photo" alt="" v-if="user&&user.photo">
-        <img src="https://raw.githubusercontent.com/BelinChung/api-mock/master/assets/avatar_hi.png" v-else />
+        <img :src="defaultAvatar" v-else />
       </div>
     </div>
     <div class="zx_center_nav">
@@ -18,6 +18,7 @@
         <van-cell custom-class="zx_cell_box" icon="description" title="信息发布" @click="checkBuyState" :value="stateName"
           is-link />
       </van-cell-group>
+      
     </div>
     <div class="zx_center_footer">
       <p>
@@ -34,12 +35,14 @@
     get,
     post
   } from "../../utils"
+  import defaultAvatar from '../../../static/assets/images/avatar_hi.png'
 
   export default {
     data: {
       user: null,
       stateName: null,
-      url: null
+      url: null,
+      defaultAvatar
     },
     computed: {
       count() {

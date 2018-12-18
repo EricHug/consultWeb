@@ -1,8 +1,8 @@
 <template>
   <div class="card">
     <div class="qy_txt">
-      <h1>{{title}}</h1>
-      <p>{{zongcheng}}</p>
+      <h1><img :src="photo?photo:defaultAvatar" alt="头像"><span class="elips">{{title}}</span></h1>
+      <p class="elips">{{zongcheng}}</p>
       <div class="qy_dt">
         <span v-if="categoryName" class="qt_tag">{{categoryName}}</span>{{time}}
         </div>
@@ -20,10 +20,13 @@ import {
 import {
   mapState
 } from 'vuex'
+import defaultAvatar from '../../static/assets/images/avatar_hi.png'
+
 export default {
-  props: ['title', 'releaseTime', 'province', 'city','district', 'town', 'image1', 'address', 'categoryId'],
+  props: ['title', 'releaseTime', 'province', 'city','district', 'town', 'image1', 'address', 'categoryId','photo'],
   data() {
     return {
+      defaultAvatar,
       time: null
     }
   },
@@ -58,10 +61,30 @@ export default {
 
   .qy_txt {
     flex-grow: 1;
+    >.elips{
+      width:520px;
+    }
   }
 
   h1 {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
     color: #13227a;
+    .elips{
+      width:440px;
+    }
+    img{
+      width:60px;
+      height:60px;
+      border-radius: 50%;
+      margin-right: 20px;
+    }
+  }
+  .elips{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   p {

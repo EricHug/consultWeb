@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "找回密码",
+  "usingComponents": {
+    "van-field": "/static/vant/field/index",
+    "van-button": "/static/vant/button/index",
+    "van-row": "/static/vant/row/index",
+    "van-col": "/static/vant/col/index",
+    "van-toast": "/static/vant/toast/index",
+    "van-dialog": "/static/vant/dialog/index",
+    "van-checkbox": "/static/vant/checkbox/index",
+    "van-checkbox-group": "/static/vant/checkbox-group/index"
+  }
+}
