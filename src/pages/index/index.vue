@@ -73,6 +73,11 @@ export default {
   computed: {
     ...mapState(['district', 'town', 'text', 'categoryList'])
   },
+  onLoad(){
+    wx.showLoading({
+      title: '加载中',
+    })
+  },
   onShow() {
     this.getPostList()
     this.getCategory()
@@ -171,6 +176,7 @@ export default {
       } else {
         Toast.fail(data.msg)
       }
+      wx.hideLoading()
       // 停止下拉动作
       wx.stopPullDownRefresh()
     },
